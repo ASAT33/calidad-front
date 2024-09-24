@@ -1,0 +1,31 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Juan Pérez",
+      "cedula": "8-123-4567",
+      "direccion": "Ciudad de Panamá, Panamá",
+      "telefono": "+507 6123-4567",
+      "fecha_nacimiento": "1/1/2000",
+      "correo_electronico": "juan@example.com",
+      "contraseña": "hashed_password",
+      "tipo_usuario": "consumidor",
+      "fecha_creacion": "2024-07-07",
+      "verified": true,
+      "foto_perfil": "foto_user.png"
+    },
+    {
+      "id": 2,
+      "nombre": "María González",
+      "cedula": "9-987-6543",
+      "direccion": "Panamá Oeste, Panamá",
+      "telefono": "+507 6999-8888",
+      "correo_electronico": "maria@example.com",
+      "contraseña": "hashed_password",
+      "tipo_usuario": "agricultor",
+      "fecha_creacion": "2024-07-07",
+      "verified": true,
+      "foto_perfil": "foto_user.png"
+    }
+  ]
+}

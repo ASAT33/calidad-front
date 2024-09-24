@@ -1,0 +1,14 @@
+{
+  "pedidos_realizados": [
+    {
+      "idpedido": 1,
+      "confirmacion_denegacion": "confirmado",
+      "id_producto": 1,
+      "id_usuario": 1,
+      "fecha_orden":"fecha_orden",
+      "track_product": "confirmado",
+
+      "comentario": "BORRAR ESTO: track product confirmado, empacado, en camino, entregado, calcular el total en otro lado"
+    }
+  ]
+}

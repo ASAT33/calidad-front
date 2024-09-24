@@ -1,0 +1,39 @@
+{
+  "productos_unidades": [
+    {
+      "id_producto": 1,
+      "unidad_medida": "libras",
+      "peso": 0.70
+    },
+    {
+      "id_producto": 1,
+      "unidad_medida": "libras",
+      "peso": 2
+    },
+    {
+      "id_producto": 1,
+      "unidad_medida": "libras",
+      "peso": 3
+    },
+    {
+      "id_producto": 10,
+      "unidad_medida": "libras",
+      "peso": 0.80
+    },
+    {
+      "id_producto": 10,
+      "unidad_medida": "libras",
+      "peso": 3
+    },
+    {
+      "id_producto": 11,
+      "unidad_medida": "libras",
+      "peso": 3
+    },
+    {
+      "id_producto": 11,
+      "unidad_medida": "libras",
+      "peso": 5
+    }
+  ]
+}

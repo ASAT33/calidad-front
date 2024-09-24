@@ -1,0 +1,53 @@
+{
+  "calificaciones": [
+    {
+      "idcliente": 1,
+      "idproducto": 1,
+      "estrellas": 4,
+      "comentario": "Buen producto",
+      "fecha": "2024-07-10"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 5,
+      "comentario": "Excelente calidad y precio",
+      "fecha": "2024-07-11"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 3,
+      "comentario": "Podría mejorar",
+      "fecha": "2024-07-12"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 1,
+      "comentario": "Podría mejorar",
+      "fecha": "2024-07-12"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 1,
+      "comentario": "quiza podria mejorar",
+      "fecha": "2024-03-12"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 2,
+      "comentario": "quiza algo mejorar",
+      "fecha": "2024-06-12"
+    },
+    {
+      "idcliente": 1,
+      "idproducto": 11,
+      "estrellas": 1,
+      "comentario": "quiza mejorar",
+      "fecha": "2024-05-12"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+.home_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%; /* Ajusta el ancho si es necesario */
+  color: #000000;
+}
+
+.home-content {
+  flex: 1;
+  padding-right: 20px; /* Espacio entre texto y la imagen */
+}
+
+.home-content h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.home-content p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.shop-now-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.shop-now-button:hover {
+  background-color: #0056b3;
+}
+
+.home-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.home-image {
+  max-width: 100%; /* Asegura que la imagen no exceda el tamaño del contenedor */
+  height: auto;
+  background: none;
+}

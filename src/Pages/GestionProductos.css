@@ -1,0 +1,152 @@
+
+.gestion-productos {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.add-product-btn {
+  background-color: #667558;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.productos-list {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  max-height: 500px; 
+  overflow-y: auto; 
+}
+
+.productos-list h2 {
+  margin-top: 0;
+}
+
+.producto {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.producto-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.producto-header h2 {
+  flex: 1;
+}
+
+.producto-header button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.producto div {
+  margin: 10px 0;
+}
+
+.producto label {
+  display: inline-block;
+  width: 120px;
+}
+
+.producto input, .producto textarea {
+  width: calc(100% - 130px);
+  padding: 5px;
+}
+
+.producto .preview-image {
+  max-width: 150px; 
+  max-height: 150px; 
+  margin-right: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.footer .help, .footer .profile {
+  display: flex;
+  align-items: center;
+}
+
+.footer .help::before, .footer .profile::before {
+  content: '?';
+  margin-right: 8px;
+}
+
+.pk-modal {
+  display: block; 
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  overflow: auto; 
+}
+
+.pk-modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; 
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 800px;
+  border-radius: 8px;
+  position: relative;
+  max-height: calc(100% - 100px);
+  overflow-y: auto;
+}
+
+
+.pk-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pk-close:hover,
+.pk-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.producto textarea {
+  width: calc(100% - 130px); 
+  max-width: calc(100% - 130px);
+  height: 100px; 
+  max-height: 100px; 
+  padding: 5px;
+  resize: vertical; 
+}

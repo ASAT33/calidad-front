@@ -1,0 +1,10 @@
+{
+  "usuarios_agricultores": [
+    {
+      "id": 1,
+      "id_usuario": 2,
+      "ruc": "123456-7",
+      "verificacion": true
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+[
+  {
+    "index": "0",
+    "title": "Saco de Naranjas",
+    "image": "sacodenaranje.jpg",
+    "Precio": "18.00",
+    "Descripcion": "hola",
+    "categoria": "fruta"
+  },
+  {
+    "index": "1",
+    "title": "Tomate",
+    "image": "tomate.jpg",
+    "Precio": "3.00",
+    "Descripcion": "El mejor tomate",
+    "categoria": "legumbre"
+  },
+  {
+    "index": "2",
+    "title": "Melon",
+    "image": "melon.jpg",
+    "Precio": "13.00",
+    "Descripcion": "",
+    "categoria": "fruta"
+  },
+  {
+    "index": "3",
+    "title": "Perejil",
+    "image": "perejil.jpg",
+    "Precio": "2.50",
+    "Descripcion": "",
+    "categoria": "legumbre"
+  },
+  {
+    "index": "4",
+    "title": "Guineo",
+    "image": "guineo.jpg",
+    "Precio": "4.00",
+    "Descripcion": "",
+    "categoria": "fruta"
+  },
+  {
+    "index": "5",
+    "title": "Piña",
+    "image": "pinña.jpg",
+    "Precio": "5.00",
+    "Descripcion": "",
+    "categoria": "fruta"
+  }
+]
+
