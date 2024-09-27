@@ -58,15 +58,10 @@ const AuthModal = ({ open, handleClose }) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/users/register', registerData);
-            const { token, user } = response.data;
-
-            // Guardar token y rol en sessionStorage
-            sessionStorage.setItem('token', token);
-            sessionStorage.setItem('role', user.role);
-            sessionStorage.setItem('id',user.id);
-
-            console.log("Registro exitoso:", user);
-
+    
+            // Log the success message
+            console.log("Registro exitoso:", response.data.message);
+    
             // Resetear formulario y cerrar modal
             setRegisterData({ name: '', email: '', password: '', role: 'evaluator' });
             handleClose();
@@ -76,7 +71,7 @@ const AuthModal = ({ open, handleClose }) => {
             alert('Error al registrar el usuario: ' + (error.response?.data?.message || error.message));
         }
     };
-
+    
     return (
         <Modal open={open} onClose={handleClose}>
             <Box sx={style}>
