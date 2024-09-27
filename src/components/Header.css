@@ -13,11 +13,11 @@
 
 .logo {
   width: 100px; /* Mantén el tamaño original */
-  margin: 9px;
+  margin: 10px;
   padding: 0px;
   height: auto;
   object-fit: contain;
-  transform: scale(1.5); /* Aumenta el tamaño al 150% */
+  transform: scale(1); /* Aumenta el tamaño al 150% */
 
 }
   

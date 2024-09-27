@@ -1,47 +1,61 @@
 .evaluation-form {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    max-width: 600px; /* Ajusta el ancho máximo según sea necesario */
-    margin: 20px auto; /* Centra el formulario en la página */
-  }
-  
-  .evaluation-form h2 {
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  .evaluation-form h3 {
-    margin: 15px 0 5px; /* Espaciado entre preguntas */
-  }
-  
-  .evaluation-form label {
-    display: block;
-    margin: 10px 0 5px;
-  }
-  
-  .evaluation-form select {
-    width: 100%; /* Ancho completo */
-    padding: 10px; /* Espaciado interno */
-    margin-bottom: 15px; /* Espaciado entre elementos */
-    border: 1px solid #ccc; /* Borde del campo */
-    border-radius: 4px; /* Bordes redondeados */
-  }
-  
-  .evaluation-form button {
-    width: 100%; /* Botón de ancho completo */
-    padding: 10px;
-    background-color: #007bff; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-    border: none; /* Sin borde */
-    border-radius: 4px; /* Bordes redondeados */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    transition: background-color 0.3s; /* Efecto de transición */
-  }
-  
-  .evaluation-form button:hover {
-    background-color: #0056b3; /* Color de fondo al pasar el cursor */
-  }
-  
+  padding: 15px; /* Menos padding para que no se vea tan encajonado */
+  border: 1px solid #e0e0e0; /* Borde más sutil */
+  border-radius: 8px; /* Bordes más suaves */
+  background-color: #fff; /* Fondo más limpio */
+  max-width: 800px; /* Más ancho */
+  margin: 30px auto; /* Más separación del borde */
+ 
+}
+
+.evaluation-form h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333; /* Un color de texto más oscuro */
+}
+
+.evaluation-form h3 {
+  margin: 20px 0 10px; /* Más espacio entre preguntas */
+  font-size: 1.1em; /* Tamaño de fuente ligeramente más grande */
+  color: #555; /* Color más suave para los títulos */
+}
+
+.evaluation-form label {
+  display: block;
+  margin: 12px 0 8px; /* Más espacio alrededor de las etiquetas */
+  font-size: 0.95em;
+  color: #666;
+}
+
+.evaluation-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f7f7f7; /* Fondo más suave */
+  font-size: 1em;
+  transition: border-color 0.2s;
+}
+
+.evaluation-form select:focus {
+  border-color: #007bff; /* Borde azul al hacer foco */
+  outline: none;
+}
+
+.evaluation-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, box-shadow 0.2s;
+}
+
+.evaluation-form button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); /* Sombra al hacer hover */
+}

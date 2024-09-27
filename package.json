@@ -1,5 +1,5 @@
 {
-  "name": "agrofast",
+  "name": "qualityscope",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,24 +10,27 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.15.18",
-    "@mui/material": "^5.15.18",
+    "@mui/material": "^5.16.7",
+    "@paypal/react-paypal-js": "^8.5.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.4",
+    "framer-motion": "^11.8.0",
     "leaflet": "^1.9.4",
-    "@paypal/react-paypal-js": "^8.5.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.4",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
     "react-modal": "^3.16.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.24.0",
     "react-slick": "^0.30.2",
-    "slick-carousel": "^1.8.1",
-    "react-time-picker": "^7.0.0"
+    "react-time-picker": "^7.0.0",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

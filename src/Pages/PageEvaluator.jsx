@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion"; // Importar para animaciones
 import "./PageEvaluator.css"; // Asegúrate de tener este archivo CSS para el estilo
 
 const products = [
@@ -11,21 +12,26 @@ const products = [
 
 const PageEvaluator = () => {
   return (
-    <div className="page-evaluator">
+    <motion.div 
+      initial={{ opacity: 0, y: -20 }} // Iniciar con opacidad 0 y ligeramente arriba
+      animate={{ opacity: 1, y: 0 }} // Finalizar con opacidad 1 y en su posición
+      transition={{ duration: 0.5 }} // Duración de la transición
+      className="page-evaluator"
+    >
       <h1>Lista de Espera de Productos para Evaluar</h1>
       <ul className="product-list">
         {products.map((product) => (
           <li className="product-item" key={product.id}>
-            <h2 className="product-name">{product.name}</h2>
-            <p className="product-description">{product.description}</p>
-            {/* Enlace al formulario de evaluación con el producto como estado */}
-            <Link to={`/evaluate/${product.id}`}>
-              <button className="evaluate-button">Evaluar</button>
+            <Link to={`/evaluar/${product.id}`} className="product-link">
+              <div className="product-content">
+                <h2 className="product-name">{product.name}</h2>
+                <p className="product-description">{product.description}</p>
+              </div>
             </Link>
           </li>
         ))}
       </ul>
-    </div>
+    </motion.div>
   );
 };
 

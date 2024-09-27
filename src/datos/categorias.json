@@ -1,8 +1,0 @@
-{
-  "categorias": [
-    { "id": 1, "nombre": "Frutas de Temporada" },
-    { "id": 2, "nombre": "Granos y Leguminosas" },
-    { "id": 3, "nombre": "Vegetales" },
-    { "id": 4, "nombre": "Productos de Exportación" }
-  ]
-}

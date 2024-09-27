@@ -18,7 +18,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../assets/logo2.png";
-import LocationFilterModal from "./LocationFilterModal"; // Importar el componente
 import "./Header.css";
 import { logout } from "../utils/auth";
 import AuthModal from "./newLogin";
@@ -70,12 +69,13 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const navItems = [
-  { label: "Evaluar", path: "/gestionfinca" },
-  { label: "Norma ISO/IEC 25010", href: "https://iso25000.com/index.php/normas-iso-25000/iso-25010" },
-  { label: "Ayuda", path: "/" },
-  { label: "Idioma", path: "/" }, // Updated
-  { label: "Certificaciones", path: "/" },
-  // { label: "Más Vendidos", path: "/top-selling" },
+  { label: "Evaluar", path: "/evaluar" },
+  //{ label: "Norma ISO/IEC 25010", href: "https://iso25000.com/index.php/normas-iso-25000/iso-25010" },
+ // { label: "Ayuda", path: "/" },
+  //{ label: "Idioma", path: "/" }, // Updated
+ // { label: "Certificaciones", path: "/" },
+  { label: "Usuario", path: "/enviar" },
+  { label: "Historial", path: "/historial" },
 ];
 
 function Header({ onLocationChange }) {
@@ -85,11 +85,6 @@ function Header({ onLocationChange }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState({
-    displayName: "",
-    details: "",
-  });
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
@@ -112,28 +107,9 @@ function Header({ onLocationChange }) {
     setAnchorEl(null);
   };
 
-  const handleLocationClick = () => {
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleLocationSave = (location) => {
-    const newLocation = {
-      displayName: location.display_name,
-      details: `${location.address.city || location.address.town || location.address.village}, ${location.address.state || location.address.region}`,
-      lat: location.lat,
-      lon: location.lon,
-    };
-    setCurrentLocation(newLocation);
-    onLocationChange(newLocation);
-    handleModalClose();
-  };
-
   const handleLogout = () => {
-    logout(navigate);
+    logout(navigate); // This will clear the JWT and redirect
+    handleClose();
   };
 
   // Language options
@@ -142,7 +118,6 @@ function Header({ onLocationChange }) {
     { code: "en", label: "English" },
     { code: "es", label: "Spanish" },
     { code: "fr", label: "French" },
-    // Add more languages as needed
   ];
 
   const handleLanguageMenuOpen = (event) => {
@@ -154,7 +129,7 @@ function Header({ onLocationChange }) {
   };
 
   const handleLanguageChange = (language) => {
-    console.log("Language selected:", language); // Replace with your language change logic
+    console.log("Language selected:", language);
     handleLanguageMenuClose();
   };
 
@@ -308,11 +283,6 @@ function Header({ onLocationChange }) {
         <DrawerHeader />
         <Typography paragraph>{/* Content goes here */}</Typography>
       </Main>
-      <LocationFilterModal
-        open={modalOpen}
-        onClose={handleModalClose}
-        onSave={handleLocationSave}
-      />
     </Box>
   );
 }
