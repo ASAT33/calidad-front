@@ -8,6 +8,7 @@ const SubmitProject = () => {
   const [projectData, setProjectData] = useState({
     name: '',
     link_or_executable: '',
+    description: '', // Campo de descripción agregado
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -36,7 +37,7 @@ const SubmitProject = () => {
         user_id, // Pasamos el user_id
       });
       setSuccessMessage('¡Proyecto enviado con éxito! 🎉');
-      setProjectData({ name: '', link_or_executable: '' }); // Resetear el formulario
+      setProjectData({ name: '', link_or_executable: '', description: '' }); // Resetear el formulario
     } catch (error) {
       setErrorMessage('Error al enviar el proyecto: ' + error.message);
     }
@@ -97,6 +98,19 @@ const SubmitProject = () => {
                 required
                 variant="outlined"
                 color="primary"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Descripción"
+                name="description"
+                value={projectData.description}
+                onChange={handleChange}
+                variant="outlined"
+                color="primary"
+                multiline // Hacer el campo multiline
+                rows={4} // Número de filas visible
               />
             </Grid>
             <Grid item xs={12}>

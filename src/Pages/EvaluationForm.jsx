@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import axios from "axios";
 import "./EvaluationForm.css"; // Asegúrate de tener este archivo CSS para el estilo
 
 const products = [
@@ -33,6 +34,44 @@ const EvaluationForm = () => {
     efficiency: "",
     security: "",
   });
+
+  // Estado para almacenar las preguntas
+  const [questions, setQuestions] = useState({
+    functionality: [],
+    reliability: [],
+    usability: [],
+    maintainability: [],
+    portability: [],
+    efficiency: [],
+    security: [],
+  });
+
+  useEffect(() => {
+    // Llamar a la API para obtener las preguntas
+    const fetchQuestions = async (category) => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/evaluation_questions/${category}`);
+        return response.data;
+      } catch (error) {
+        console.error("Error al obtener preguntas:", error);
+        return [];
+      }
+    };
+
+    // Obtener preguntas para cada categoría
+    const loadQuestions = async () => {
+      const categories = Object.keys(questions);
+      const fetchedQuestions = {};
+
+      for (let category of categories) {
+        fetchedQuestions[category] = await fetchQuestions(category);
+      }
+
+      setQuestions(fetchedQuestions);
+    };
+
+    loadQuestions();
+  }, []); // Dependencias vacías para que se ejecute solo una vez al montar el componente
 
   const handleChange = (category, index, value) => {
     const newRatings = { ...ratings };
@@ -69,14 +108,10 @@ const EvaluationForm = () => {
       <form onSubmit={handleSubmit}>
         {/* Funcionalidad */}
         <h3>Funcionalidad</h3>
-        {[
-          "La funcionalidad del software cumple con las expectativas.",
-          "El software proporciona características adecuadas.",
-          "El software es capaz de realizar tareas específicas.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("functionality", index, e.target.value)}>
+        {questions.functionality.map((question) => (
+          <div key={question.id}>
+            <label>{question.question_text}:</label>
+            <select onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)}>
               <option value="0">Seleccionar</option>
               <option value="1">1 - Muy malo</option>
               <option value="2">2 - Malo</option>
@@ -96,179 +131,41 @@ const EvaluationForm = () => {
           />
         )}
 
-        {/* Fiabilidad */}
-        <h3>Fiabilidad</h3>
+        {/* Repetir para otras categorías */}
         {[
-          "El software es confiable en su funcionamiento.",
-          "El software tiene un rendimiento constante.",
-          "El software presenta errores mínimos.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("reliability", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
+          { key: "reliability", title: "Fiabilidad" },
+          { key: "usability", title: "Usabilidad" },
+          { key: "maintainability", title: "Mantenibilidad" },
+          { key: "portability", title: "Portabilidad" },
+          { key: "efficiency", title: "Eficiencia" },
+          { key: "security", title: "Seguridad" },
+        ].map(({ key, title }) => (
+          <div key={key}>
+            <h3>{title}</h3>
+            {questions[key].map((question) => (
+              <div key={question.id}>
+                <label>{question.question_text}:</label>
+                <select onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)}>
+                  <option value="0">Seleccionar</option>
+                  <option value="1">1 - Muy malo</option>
+                  <option value="2">2 - Malo</option>
+                  <option value="3">3 - Regular</option>
+                  <option value="4">4 - Bueno</option>
+                  <option value="5">5 - Muy bueno</option>
+                </select>
+              </div>
+            ))}
+            {shouldShowComments(key) && (
+              <textarea
+                value={sectionComments[key]}
+                onChange={(e) => handleSectionCommentsChange(key, e.target.value)}
+                placeholder={`Comentarios sobre la ${title.toLowerCase()}`}
+                rows="2"
+                cols="50"
+              />
+            )}
           </div>
         ))}
-        {shouldShowComments("reliability") && (
-          <textarea
-            value={sectionComments.reliability}
-            onChange={(e) => handleSectionCommentsChange("reliability", e.target.value)}
-            placeholder="Comentarios sobre la fiabilidad"
-            rows="2"
-            cols="50"
-          />
-        )}
-
-        {/* Usabilidad */}
-        <h3>Usabilidad</h3>
-        {[
-          "El software es fácil de usar.",
-          "La interfaz del software es intuitiva.",
-          "El software ofrece una documentación clara.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("usability", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
-          </div>
-        ))}
-        {shouldShowComments("usability") && (
-          <textarea
-            value={sectionComments.usability}
-            onChange={(e) => handleSectionCommentsChange("usability", e.target.value)}
-            placeholder="Comentarios sobre la usabilidad"
-            rows="2"
-            cols="50"
-          />
-        )}
-
-        {/* Mantenibilidad */}
-        <h3>Mantenibilidad</h3>
-        {[
-          "El software se puede modificar fácilmente.",
-          "Es sencillo realizar actualizaciones.",
-          "El software permite la resolución rápida de problemas.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("maintainability", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
-          </div>
-        ))}
-        {shouldShowComments("maintainability") && (
-          <textarea
-            value={sectionComments.maintainability}
-            onChange={(e) => handleSectionCommentsChange("maintainability", e.target.value)}
-            placeholder="Comentarios sobre la mantenibilidad"
-            rows="2"
-            cols="50"
-          />
-        )}
-
-        {/* Portabilidad */}
-        <h3>Portabilidad</h3>
-        {[
-          "El software se puede instalar en diferentes entornos.",
-          "El software es compatible con varios sistemas operativos.",
-          "El software permite la migración a nuevas plataformas.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("portability", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
-          </div>
-        ))}
-        {shouldShowComments("portability") && (
-          <textarea
-            value={sectionComments.portability}
-            onChange={(e) => handleSectionCommentsChange("portability", e.target.value)}
-            placeholder="Comentarios sobre la portabilidad"
-            rows="2"
-            cols="50"
-          />
-        )}
-
-        {/* Eficiencia */}
-        <h3>Eficiencia</h3>
-        {[
-          "El software utiliza los recursos de manera efectiva.",
-          "El rendimiento del software es adecuado para su propósito.",
-          "El software responde rápidamente a las acciones del usuario.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("efficiency", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
-          </div>
-        ))}
-        {shouldShowComments("efficiency") && (
-          <textarea
-            value={sectionComments.efficiency}
-            onChange={(e) => handleSectionCommentsChange("efficiency", e.target.value)}
-            placeholder="Comentarios sobre la eficiencia"
-            rows="2"
-            cols="50"
-          />
-        )}
-
-        {/* Seguridad */}
-        <h3>Seguridad</h3>
-        {[
-          "El software protege adecuadamente los datos del usuario.",
-          "El software tiene mecanismos de autenticación efectivos.",
-          "El software es resistente a ataques externos.",
-        ].map((q, index) => (
-          <div key={index}>
-            <label>{q}:</label>
-            <select onChange={(e) => handleChange("security", index, e.target.value)}>
-              <option value="0">Seleccionar</option>
-              <option value="1">1 - Muy malo</option>
-              <option value="2">2 - Malo</option>
-              <option value="3">3 - Regular</option>
-              <option value="4">4 - Bueno</option>
-              <option value="5">5 - Muy bueno</option>
-            </select>
-          </div>
-        ))}
-        {shouldShowComments("security") && (
-          <textarea
-            value={sectionComments.security}
-            onChange={(e) => handleSectionCommentsChange("security", e.target.value)}
-            placeholder="Comentarios sobre la seguridad"
-            rows="2"
-            cols="50"
-          />
-        )}
 
         {/* Comentarios generales */}
         <h3>Comentarios generales</h3>
