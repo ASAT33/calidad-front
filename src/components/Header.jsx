@@ -1,4 +1,3 @@
-// src/components/Header.jsx
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
@@ -17,6 +16,11 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";  // Icon for Home
+import PersonIcon from "@mui/icons-material/Person"; // Icon for Perfil
+import HistoryIcon from "@mui/icons-material/History"; // Icon for Historial
+import AssessmentIcon from "@mui/icons-material/Assessment"; // Icon for Evaluar
+import DescriptionIcon from "@mui/icons-material/Description"; // Icon for Norma ISO25010
 import logo from "../assets/logo2.png";
 import "./Header.css";
 import { logout } from "../utils/auth";
@@ -70,10 +74,6 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const navItems = [
   { label: "Evaluar", path: "/evaluar" },
-  //{ label: "Norma ISO/IEC 25010", href: "https://iso25000.com/index.php/normas-iso-25000/iso-25010" },
- // { label: "Ayuda", path: "/" },
-  //{ label: "Idioma", path: "/" }, // Updated
- // { label: "Certificaciones", path: "/" },
   { label: "Usuario", path: "/enviar" },
   { label: "Historial", path: "/historial" },
 ];
@@ -108,7 +108,7 @@ function Header({ onLocationChange }) {
   };
 
   const handleLogout = () => {
-    logout(navigate); // This will clear the JWT and redirect
+    logout(navigate);
     handleClose();
   };
 
@@ -155,31 +155,13 @@ function Header({ onLocationChange }) {
           </Typography>
 
           {navItems.map((item) => (
-            item.href ? (
-              <Button
-                key={item.label}
-                sx={{ color: "#fff" }}
-                onClick={() => window.open(item.href, "_blank")}
-              >
-                {item.label}
-              </Button>
-            ) : item.label === "Idioma" ? (
-              <Button
-                key={item.label}
-                sx={{ color: "#fff" }}
-                onClick={handleLanguageMenuOpen}
-              >
-                {item.label}
-              </Button>
-            ) : (
-              <Button
-                key={item.label}
-                sx={{ color: "#fff" }}
-                onClick={() => handleNavigation(item.path)}
-              >
-                {item.label}
-              </Button>
-            )
+            <Button
+              key={item.label}
+              sx={{ color: "#fff" }}
+              onClick={() => handleNavigation(item.path)}
+            >
+              {item.label}
+            </Button>
           ))}
 
           <IconButton
@@ -235,6 +217,7 @@ function Header({ onLocationChange }) {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            backgroundColor: "#f8f9fa", // Fondo claro para el sidebar
           },
         }}
         variant="persistent"
@@ -246,37 +229,39 @@ function Header({ onLocationChange }) {
             <img src={logo} className="logo" alt="logo" />
           </div>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
+            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <div className="menu-item">
           <Link to="/perfil" className="sidebar-links">
-            <i className="icon user-icon"></i>
+            <PersonIcon className="icon" />
             Perfil
           </Link>
         </div>
         <div className="menu-item">
           <Link to="/" className="sidebar-links">
-            <i className="icon home-icon"></i>
+            <HomeIcon className="icon" />
             Inicio
           </Link>
         </div>
         <div className="menu-item">
-          <i className="icon favorites-icon"></i>
-          <span>Favoritos</span>
+          <Link to="/enviar" className="sidebar-links">
+            <AssessmentIcon className="icon" />
+            Evaluar
+          </Link>
         </div>
         <div className="menu-item">
-          <i className="icon orders-icon"></i>
-          <span>Ordenes</span>
+          <Link to="/historial" className="sidebar-links">
+            <HistoryIcon className="icon" />
+            Historial
+          </Link>
         </div>
         <div className="menu-item">
-          <i className="icon notifications-icon"></i>
-          <span>Notificaciones</span>
+          <Link to="/Iso" className="sidebar-links">
+            <DescriptionIcon className="icon" />
+            Norma ISO25010
+          </Link>
         </div>
       </MuiDrawer>
       <Main style={{ padding: "0px" }} open={open}>
