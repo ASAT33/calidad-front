@@ -98,3 +98,62 @@
   font-optical-sizing: auto;
   font-weight: 100;
 }
+
+/* Header.css */
+.sidebar-links {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #5d6d7e;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .sidebar-links:hover {
+    background-color: #f1f1f1;
+    color: #2c3e50;
+  }
+  
+  .menu-item {
+    margin: 10px 0;
+  }
+  
+  .menu-item i.icon {
+    margin-right: 10px;
+    color: #5d6d7e;
+    font-size: 20px;
+  }
+  
+  .sidebar-links.active {
+    background-color: #e8e8e8;
+    color: #2c3e50;
+    border-left: 4px solid #3498db;
+  }
+  
+  .sidebar-links i {
+    color: inherit;
+  }
+  
+  .divlogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .MuiDrawer-paper {
+    background-color: #f8f9fa;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .MuiDrawer-paper .menu-item i {
+    color: #2c3e50;
+  }
+  
+  .MuiDrawer-paper .menu-item span {
+    font-size: 16px;
+    color: #5d6d7e;
+  }
+  
