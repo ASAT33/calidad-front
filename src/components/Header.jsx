@@ -16,6 +16,11 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";  // Icon for Home
+import PersonIcon from "@mui/icons-material/Person"; // Icon for Perfil
+import HistoryIcon from "@mui/icons-material/History"; // Icon for Historial
+import AssessmentIcon from "@mui/icons-material/Assessment"; // Icon for Evaluar
+import DescriptionIcon from "@mui/icons-material/Description"; // Icon for Norma ISO25010
 import logo from "../assets/logo2.png";
 import "./Header.css";
 import { logout } from "../utils/auth";
@@ -230,37 +235,34 @@ function Header({ onLocationChange }) {
         <Divider />
         <div className="menu-item">
           <Link to="/perfil" className="sidebar-links">
-            <i className="icon user-icon"></i>
+            <PersonIcon className="icon" />
             Perfil
           </Link>
         </div>
         <div className="menu-item">
           <Link to="/" className="sidebar-links">
-            <i className="icon home-icon"></i>
+            <HomeIcon className="icon" />
             Inicio
           </Link>
         </div>
         <div className="menu-item">
           <Link to="/enviar" className="sidebar-links">
-            <i className="icon home-icon"></i>
+            <AssessmentIcon className="icon" />
             Evaluar
           </Link>
         </div>
-
         <div className="menu-item">
-          <Link to="/Historial" className="sidebar-links">
-            <i className="icon home-icon"></i>
+          <Link to="/historial" className="sidebar-links">
+            <HistoryIcon className="icon" />
             Historial
           </Link>
         </div>
-
         <div className="menu-item">
           <Link to="/Iso" className="sidebar-links">
-            <i className="icon home-icon"></i>
+            <DescriptionIcon className="icon" />
             Norma ISO25010
           </Link>
         </div>
-        
       </MuiDrawer>
       <Main style={{ padding: "0px" }} open={open}>
         <DrawerHeader />
