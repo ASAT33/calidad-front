@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Paper, Grid } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -7,14 +7,28 @@ import { motion } from 'framer-motion'; // Importar para animaciones
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const EvaluationHistory = () => {
-  const [evaluations] = useState([
-    { id: 1, projectName: 'Proyecto Alpha', rating: 4.5, comment: 'Excelente trabajo, muy bien organizado.' },
-    { id: 2, projectName: 'Proyecto Beta', rating: 3.0, comment: 'Falta un poco de documentación y pruebas.' },
-    { id: 3, projectName: 'Proyecto Gamma', rating: 5.0, comment: 'Increíble! Superó todas las expectativas.' },
-    { id: 4, projectName: 'Proyecto Delta', rating: 2.5, comment: 'No cumple con los requisitos mínimos.' },
-  ]);
+  // Estado para almacenar las evaluaciones
+  const [evaluations, setEvaluations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const totalProjects = 10; // Total de proyectos a evaluar
+  // Llamada al endpoint para obtener las evaluaciones
+  useEffect(() => {
+    const fetchEvaluations = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/calificado'); // Llamada al endpoint
+        const data = await response.json(); // Parsear la respuesta como JSON
+        setEvaluations(data); // Actualizar el estado con las evaluaciones obtenidas
+        setLoading(false); // Terminar la carga
+      } catch (error) {
+        console.error('Error al cargar las evaluaciones:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchEvaluations();
+  }, []);
+
+  const totalProjects = 10; // Total de proyectos a evaluar (esto puede venir de la API también si es dinámico)
   const evaluatedCount = evaluations.length; // Número de evaluaciones realizadas
   const pendingCount = totalProjects - evaluatedCount; // Número de evaluaciones pendientes
 
@@ -37,6 +51,10 @@ const EvaluationHistory = () => {
     responsive: false, // Hacer el gráfico de un tamaño fijo
   };
 
+  if (loading) {
+    return <Typography variant="h5" align="center">Cargando evaluaciones...</Typography>;
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: -20 }} // Iniciar con opacidad 0 y ligeramente arriba
@@ -56,8 +74,8 @@ const EvaluationHistory = () => {
                   <React.Fragment key={evaluation.id}>
                     <ListItem>
                       <ListItemText
-                        primary={`Proyecto: ${evaluation.projectName}`}
-                        secondary={`Calificación: ${evaluation.rating} - Comentario: ${evaluation.comment}`}
+                        primary={`Proyecto: ${evaluation.nombre_software}`}
+                        secondary={`Fecha: ${evaluation.fecha} - Comentario: ${evaluation.comentario}`}
                       />
                     </ListItem>
                     <Divider />

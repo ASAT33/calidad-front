@@ -94,7 +94,7 @@ const EvaluationForm = () => {
 
     const evaluationData = {
       software_id: id, // ID del producto
-      evaluator_id: product.user_id, // Cambia esto si tienes un ID de evaluador
+      evaluator_id: product.user_id, 
       comentario_general: comments.general || '', // Asegúrate de incluir el comentario general
       answers: Object.keys(ratings).map((category) => {
         return ratings[category].map((calificacion, index) => ({
