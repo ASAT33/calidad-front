@@ -18,6 +18,8 @@ const EvaluationForm = () => {
     portability: [],
     efficiency: [],
     security: [],
+    compatibility: [],  // Nueva categoría
+    fiability: [],      // Nueva categoría
   });
 
   const [ratings, setRatings] = useState({
@@ -28,10 +30,12 @@ const EvaluationForm = () => {
     portability: [0, 0, 0],
     efficiency: [0, 0, 0],
     security: [0, 0, 0],
+    compatibility: [0, 0, 0],  // Nueva categoría
+    fiability: [0, 0, 0],      // Nueva categoría
   });
 
   const [comments, setComments] = useState({
-    general: '', // Initialize general comments
+    general: '', // Comentario general
   }); // Estado para manejar los comentarios por pregunta
 
   // Llamada a la API para obtener el producto
@@ -97,11 +101,17 @@ const EvaluationForm = () => {
       evaluator_id: product.user_id, 
       comentario_general: comments.general || '', // Asegúrate de incluir el comentario general
       answers: Object.keys(ratings).map((category) => {
-        return ratings[category].map((calificacion, index) => ({
-          question_id: questions[category][index].id,
-          calificacion: calificacion,
-          comentario_categoria: comments[`${category}_${questions[category][index].id}`] || '', // Obtener el comentario por pregunta
-        }));
+        return ratings[category].map((calificacion, index) => {
+          // Verificar si hay preguntas en la categoría y si el índice es válido
+          if (questions[category] && questions[category][index]) {
+            return {
+              question_id: questions[category][index].id,
+              calificacion: calificacion,
+              comentario_categoria: comments[`${category}_${questions[category][index].id}`] || '', // Obtener el comentario por pregunta
+            };
+          }
+          return null; // Retornar null si no hay pregunta
+        }).filter(answer => answer !== null); // Filtrar respuestas nulas
       }).flat(), // Aplana el array
     };
 
@@ -170,11 +180,12 @@ const EvaluationForm = () => {
         {/* Repetir para otras categorías */}
         {[  
           { key: "reliability", title: "Fiabilidad" },
+          { key: "compatibility", title: "Compatibilidad" },  // Nueva categoría
           { key: "usability", title: "Usabilidad" },
+          { key: "fiability", title: "Fiabilidad" }, 
+          { key: "security", title: "Seguridad" }, 
           { key: "maintainability", title: "Mantenibilidad" },
           { key: "portability", title: "Portabilidad" },
-          { key: "efficiency", title: "Eficiencia" },
-          { key: "security", title: "Seguridad" },
         ].map(({ key, title }) => (
           <div key={key}>
             <h3>{title}</h3>

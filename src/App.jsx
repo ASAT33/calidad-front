@@ -31,8 +31,8 @@ function App() {
           <Route path="/evaluar" element={<PrivateRoute requiredRole="evaluator"> <PageEvaluator /></PrivateRoute>} />
           <Route path="/evaluar/:id" element={<PrivateRoute requiredRole="evaluator"> <EvaluationForm /></PrivateRoute>} />
           <Route path="/historial" element={<PrivateRoute requiredRole="evaluator"> <EvaluationHistory /></PrivateRoute>} />
-          <Route path="/perfil" element={<PrivateRoute requiredRole="evaluator"> <EvaluationHistory /></PrivateRoute>} />
-          <Route path="/perfil" element={<PrivateRoute requiredRole="user"> <EvaluationHistory /></PrivateRoute>} />
+          <Route path="/perfil" element={<PrivateRoute requiredRole="evaluator"> <Perfil /></PrivateRoute>} />
+          <Route path="/perfil" element={<PrivateRoute requiredRole="user"> <Perfil /></PrivateRoute>} />
         </Routes>
       </BrowserRouter>
     </>
