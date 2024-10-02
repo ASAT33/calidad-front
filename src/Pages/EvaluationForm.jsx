@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion"; // Importar para animaciones
 import "./EvaluationForm.css"; // Asegúrate de tener este archivo CSS para el estilo
 
 const EvaluationForm = () => {
@@ -115,10 +116,15 @@ const EvaluationForm = () => {
   };
 
   // Mostrar mensaje de carga si no se ha obtenido el producto
-  if (!product) return <div>Cargando producto...</div>;
+  if (!product) return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>Cargando producto...</motion.div>;
 
   return (
-    <div className="evaluation-form">
+    <motion.div 
+      className="evaluation-form"
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.5 }}
+    >
       <h2>Evaluar {product.name}</h2>
       
       {/* Mostrar el link del proyecto y el ID de la persona que lo subió */}
@@ -133,10 +139,6 @@ const EvaluationForm = () => {
             {product.link_or_executable}
           </a>
         </p>
-        <p>
-          {/*<strong>ID de quien lo subió: </strong>
-          {product.user_id}*/}
-        </p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -145,7 +147,10 @@ const EvaluationForm = () => {
         {questions.functionality.map((question) => (
           <div key={question.id}>
             <label>{question.question_text}:</label>
-            <select onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)}>
+            <select 
+              onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)} 
+              className="evaluation-select"
+            >
               <option value="0">Seleccionar</option>
               <option value="1">1 - Muy malo</option>
               <option value="2">2 - Malo</option>
@@ -153,7 +158,6 @@ const EvaluationForm = () => {
               <option value="4">4 - Bueno</option>
               <option value="5">5 - Muy bueno</option>
             </select>
-            {/* Mostrar el comentario solo si la calificación es entre 1 y 3 */}
             {(ratings.functionality[questions.functionality.indexOf(question)] >= 1 && 
               ratings.functionality[questions.functionality.indexOf(question)] <= 3) && (
               <textarea
@@ -161,7 +165,7 @@ const EvaluationForm = () => {
                 onChange={(e) => handleCommentChange("functionality", question.id, e.target.value)}
                 placeholder="Comentario sobre esta pregunta"
                 rows="2"
-                cols="50"
+                className="evaluation-textarea"
               />
             )}
           </div>
@@ -181,7 +185,10 @@ const EvaluationForm = () => {
             {questions[key].map((question) => (
               <div key={question.id}>
                 <label>{question.question_text}:</label>
-                <select onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)}>
+                <select 
+                  onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)} 
+                  className="evaluation-select"
+                >
                   <option value="0">Seleccionar</option>
                   <option value="1">1 - Muy malo</option>
                   <option value="2">2 - Malo</option>
@@ -189,7 +196,6 @@ const EvaluationForm = () => {
                   <option value="4">4 - Bueno</option>
                   <option value="5">5 - Muy bueno</option>
                 </select>
-                {/* Mostrar el comentario solo si la calificación es entre 1 y 3 */}
                 {(ratings[key][questions[key].indexOf(question)] >= 1 && 
                   ratings[key][questions[key].indexOf(question)] <= 3) && (
                   <textarea
@@ -197,7 +203,7 @@ const EvaluationForm = () => {
                     onChange={(e) => handleCommentChange(key, question.id, e.target.value)}
                     placeholder="Comentario sobre esta pregunta"
                     rows="2"
-                    cols="50"
+                    className="evaluation-textarea"
                   />
                 )}
               </div>
@@ -212,13 +218,19 @@ const EvaluationForm = () => {
           onChange={(e) => handleGeneralCommentChange(e.target.value)} 
           placeholder="Escribe tus comentarios generales aquí..."
           rows="4"
-          cols="50"
+          className="evaluation-textarea"
         />
 
-        <button type="submit">Enviar Calificación</button>
-        <Link to="/evaluar">Volver a la lista de productos</Link>
+        <motion.button 
+          type="submit" 
+          className="evaluation-submit"
+          whileHover={{ scale: 1.05 }}
+        >
+          Enviar Calificación
+        </motion.button>
+        <Link to="/evaluar" className="evaluation-link">Volver a la lista de productos</Link>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
