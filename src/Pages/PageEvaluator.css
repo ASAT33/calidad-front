@@ -1,20 +1,29 @@
+/* Estilos para la página de evaluación */
+
 .page-evaluator {
-  padding: 20px; /* Espaciado alrededor de la página */
+  padding: 40px 20px; /* Espaciado mayor alrededor de la página */
   text-align: center;
+  background-color: #f0f4f8; /* Fondo claro y suave */
+  min-height: 100vh; /* Ocupa toda la altura de la pantalla */
+}
+
+.page-title {
+  font-size: 2.5rem; /* Tamaño grande para el título */
+  color: #333; /* Color oscuro para el título */
+  margin-bottom: 30px; /* Espaciado debajo del título */
 }
 
 .product-list {
   list-style: none; /* Sin puntos de lista */
   padding: 0;
-  display: flex; /* Flexbox para alinear tarjetas */
-  flex-direction: column; /* Dirección vertical */
-  gap: 15px; /* Espacio entre las tarjetas */
+  display: grid; /* Usamos grid para un diseño más flexible */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Columnas flexibles */
+  gap: 20px; /* Espacio entre las tarjetas */
 }
 
 .product-item {
-  width: 80%; /* Que ocupe el ancho completo de la página */
-  max-width: 1000px; /* Ancho máximo para evitar que se estiren demasiado */
-  margin: 0 auto; /* Centrar tarjeta */
+  display: flex;
+  justify-content: center;
 }
 
 .product-link {
@@ -22,27 +31,46 @@
   text-decoration: none; /* Sin subrayado */
   color: black; /* Texto negro */
   border: 1px solid #e0e0e0; /* Borde sutil */
-  border-radius: 8px; /* Bordes suaves */
-  background-color: #f9f9f9; /* Fondo suave */
-  transition: background-color 0.3s, transform 0.2s; /* Transiciones para el hover */
-  padding: 15px; /* Espaciado interno */
+  border-radius: 12px; /* Bordes suaves */
+  background: linear-gradient(145deg, #ffffff, #f0f0f0); /* Fondo con degradado suave */
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Transiciones para hover */
+  padding: 20px; /* Espaciado interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .product-link:hover {
-  background-color: #e3f2fd; /* Fondo más vibrante al hacer hover */
-  transform: translateY(-2px); /* Eleva el elemento al hacer hover */
+  background-color: #e0f7fa; /* Fondo más vibrante al hacer hover */
+  transform: translateY(-5px); /* Eleva el elemento al hacer hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más fuerte */
 }
 
 .product-content {
-  text-align: left; /* Centrar texto dentro de la tarjeta */
+  text-align: left; /* Alinear texto a la izquierda */
 }
 
 .product-name {
-  font-size: 1.5em; /* Tamaño de fuente mayor para el nombre */
-  margin: 0; /* Sin márgenes */
+  font-size: 1.75rem; /* Tamaño de fuente mayor para el nombre */
+  color: #00796b; /* Color principal del nombre */
+  margin: 0 0 10px; /* Sin márgenes superiores y margen inferior */
 }
 
 .product-description {
-  margin: 10px 0 0; /* Espacio entre descripción y nombre */
+  font-size: 1rem; /* Tamaño de fuente estándar para la descripción */
   color: #555; /* Color más suave para la descripción */
+  margin: 0; /* Sin márgenes */
+}
+
+/* Ajustes responsivos */
+@media (max-width: 600px) {
+  .page-title {
+    font-size: 2rem; /* Reducir el tamaño del título en pantallas pequeñas */
+  }
+
+  .product-name {
+    font-size: 1.5rem; /* Reducir el tamaño del nombre en pantallas pequeñas */
+  }
+
+  .product-description {
+    font-size: 0.9rem; /* Reducir la fuente de la descripción */
+  }
 }

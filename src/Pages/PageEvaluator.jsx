@@ -28,7 +28,7 @@ const PageEvaluator = () => {
   }, []); // El array vacío asegura que se ejecute solo al montar el componente
 
   if (loading) {
-    return <p>Cargando proyectos...</p>; // Mostrar un mensaje mientras carga
+    return <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>Cargando proyectos...</motion.p>; // Mostrar un mensaje mientras carga
   }
 
   return (
@@ -38,20 +38,25 @@ const PageEvaluator = () => {
       transition={{ duration: 0.5 }} // Duración de la transición
       className="page-evaluator"
     >
-      <h1>Lista de Espera de Productos para Evaluar</h1>
+      <h1 className="page-title">Lista de Proyectos para Evaluar</h1>
       {projects.length === 0 ? ( // Verificar si no hay proyectos
         <p>No hay proyectos disponibles para evaluar.</p>
       ) : (
         <ul className="product-list">
           {projects.map((project) => (
-            <li className="product-item" key={project.id}>
+            <motion.li
+              className="product-item"
+              key={project.id}
+              whileHover={{ scale: 1.02 }} // Animación de hover
+              transition={{ duration: 0.3 }}
+            >
               <Link to={`/evaluar/${project.id}`} className="product-link">
                 <div className="product-content">
                   <h2 className="product-name">{project.name}</h2>
                   <p className="product-description">{project.description}</p>
                 </div>
               </Link>
-            </li>
+            </motion.li>
           ))}
         </ul>
       )}

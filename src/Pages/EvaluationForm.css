@@ -1,61 +1,149 @@
+/* Estilos para el formulario de evaluación */
+
 .evaluation-form {
-  padding: 15px; /* Menos padding para que no se vea tan encajonado */
-  border: 1px solid #e0e0e0; /* Borde más sutil */
-  border-radius: 8px; /* Bordes más suaves */
-  background-color: #fff; /* Fondo más limpio */
-  max-width: 800px; /* Más ancho */
-  margin: 30px auto; /* Más separación del borde */
- 
+  padding: 30px; 
+  border: 1px solid #e0e0e0; 
+  border-radius: 12px; 
+  background-color: #fff; 
+  max-width: 900px; 
+  margin: 50px auto; 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .evaluation-form h2 {
   margin-bottom: 20px;
   text-align: center;
-  color: #333; /* Un color de texto más oscuro */
+  color: #333; 
+  font-size: 2rem;
 }
 
 .evaluation-form h3 {
-  margin: 20px 0 10px; /* Más espacio entre preguntas */
-  font-size: 1.1em; /* Tamaño de fuente ligeramente más grande */
-  color: #555; /* Color más suave para los títulos */
+  margin: 20px 0 10px; 
+  font-size: 1.3em;
+  color: #007bff; 
 }
 
 .evaluation-form label {
   display: block;
-  margin: 12px 0 8px; /* Más espacio alrededor de las etiquetas */
-  font-size: 0.95em;
+  margin: 12px 0 8px; 
+  font-size: 1em;
   color: #666;
 }
 
-.evaluation-form select {
+.evaluation-form .product-details p {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.evaluation-select {
   width: 100%;
   padding: 12px;
   margin-bottom: 18px;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #f7f7f7; /* Fondo más suave */
+  border-radius: 8px;
+  background-color: #f7f7f7; 
   font-size: 1em;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s ease;
 }
 
-.evaluation-form select:focus {
-  border-color: #007bff; /* Borde azul al hacer foco */
+.evaluation-select:focus {
+  border-color: #007bff; 
   outline: none;
 }
 
-.evaluation-form button {
+.evaluation-textarea {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f7f7f7; 
+  margin-bottom: 20px;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+.evaluation-textarea:focus {
+  border-color: #007bff; 
+  outline: none;
+}
+
+.evaluation-submit {
+  width: 100%;
+  padding: 15px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 1.2em;
   transition: background-color 0.3s, box-shadow 0.2s;
+  margin-bottom: 20px;
 }
 
-.evaluation-form button:hover {
+.evaluation-submit:hover {
   background-color: #0056b3;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); /* Sombra al hacer hover */
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2); 
+}
+
+.evaluation-link {
+  display: block;
+  text-align: center;
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.evaluation-link:hover {
+  color: #0056b3;
+}
+.success-message {
+  color: #28a745;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 1.1em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.evaluation-submit {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: background-color 0.3s, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+
+.evaluation-submit:disabled {
+  background-color: #d3d3d3; /* Botón gris cuando está deshabilitado */
+  cursor: not-allowed; /* Cambiar cursor a no permitido */
+  box-shadow: none; /* Sin sombra cuando está deshabilitado */
+}
+.success-message {
+  color: #28a745; /* Verde para el mensaje de éxito */
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #d4edda;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.error-message {
+  color: #dc3545; /* Rojo para el mensaje de error */
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 8px;
 }
