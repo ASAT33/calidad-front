@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion"; // Importar para animaciones
 import "./EvaluationForm.css"; // Asegúrate de tener este archivo CSS para el estilo
 
 const EvaluationForm = () => {
@@ -32,7 +33,11 @@ const EvaluationForm = () => {
 
   const [comments, setComments] = useState({
     general: '', // Initialize general comments
-  }); // Estado para manejar los comentarios por pregunta
+  });
+
+  const [loading, setLoading] = useState(false); // Estado para manejar la carga del envío
+  const [successMessage, setSuccessMessage] = useState(''); // Mensaje de éxito
+  const [errorMessage, setErrorMessage] = useState(''); // Mensaje de error
 
   // Llamada a la API para obtener el producto
   useEffect(() => {
@@ -91,6 +96,7 @@ const EvaluationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Deshabilitar botón de envío mientras se procesa
 
     const evaluationData = {
       software_id: id, // ID del producto
@@ -106,19 +112,44 @@ const EvaluationForm = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/evaluations', evaluationData);
-      console.log("Evaluación guardada:", response.data);
-      // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
+      await axios.post('http://localhost:5000/api/evaluations', evaluationData);
+      setSuccessMessage("¡Evaluación enviada con éxito! 🎉"); // Mostrar mensaje de éxito
+      setErrorMessage(''); // Limpiar mensajes de error
+      setLoading(false); // Habilitar el botón nuevamente
+      setRatings({ // Limpiar calificaciones
+        functionality: [0, 0, 0],
+        reliability: [0, 0, 0],
+        usability: [0, 0, 0],
+        maintainability: [0, 0, 0],
+        portability: [0, 0, 0],
+        efficiency: [0, 0, 0],
+        security: [0, 0, 0],
+      });
+      setComments({ general: '' }); // Limpiar comentarios
     } catch (error) {
-      console.error("Error al guardar la evaluación:", error);
+      setErrorMessage("Hubo un error al enviar la evaluación. Inténtalo nuevamente.");
+      setSuccessMessage(''); // Limpiar mensajes de éxito
+      setLoading(false); // Habilitar el botón nuevamente
     }
   };
 
+  // Verificar si todos los campos están completos
+  const isFormComplete = () => {
+    return Object.values(ratings).every((categoryRatings) =>
+      categoryRatings.every((rating) => rating > 0)
+    );
+  };
+
   // Mostrar mensaje de carga si no se ha obtenido el producto
-  if (!product) return <div>Cargando producto...</div>;
+  if (!product) return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>Cargando producto...</motion.div>;
 
   return (
-    <div className="evaluation-form">
+    <motion.div 
+      className="evaluation-form"
+      initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.5 }}
+    >
       <h2>Evaluar {product.name}</h2>
       
       {/* Mostrar el link del proyecto y el ID de la persona que lo subió */}
@@ -133,11 +164,11 @@ const EvaluationForm = () => {
             {product.link_or_executable}
           </a>
         </p>
-        <p>
-          {/*<strong>ID de quien lo subió: </strong>
-          {product.user_id}*/}
-        </p>
       </div>
+
+      {/* Mostrar mensajes de éxito o error */}
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <form onSubmit={handleSubmit}>
         {/* Funcionalidad */}
@@ -145,7 +176,11 @@ const EvaluationForm = () => {
         {questions.functionality.map((question) => (
           <div key={question.id}>
             <label>{question.question_text}:</label>
-            <select onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)}>
+            <select 
+              onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)} 
+              className="evaluation-select"
+              value={ratings.functionality[questions.functionality.indexOf(question)]}
+            >
               <option value="0">Seleccionar</option>
               <option value="1">1 - Muy malo</option>
               <option value="2">2 - Malo</option>
@@ -153,7 +188,6 @@ const EvaluationForm = () => {
               <option value="4">4 - Bueno</option>
               <option value="5">5 - Muy bueno</option>
             </select>
-            {/* Mostrar el comentario solo si la calificación es entre 1 y 3 */}
             {(ratings.functionality[questions.functionality.indexOf(question)] >= 1 && 
               ratings.functionality[questions.functionality.indexOf(question)] <= 3) && (
               <textarea
@@ -161,7 +195,7 @@ const EvaluationForm = () => {
                 onChange={(e) => handleCommentChange("functionality", question.id, e.target.value)}
                 placeholder="Comentario sobre esta pregunta"
                 rows="2"
-                cols="50"
+                className="evaluation-textarea"
               />
             )}
           </div>
@@ -181,7 +215,11 @@ const EvaluationForm = () => {
             {questions[key].map((question) => (
               <div key={question.id}>
                 <label>{question.question_text}:</label>
-                <select onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)}>
+                <select 
+                  onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)} 
+                  className="evaluation-select"
+                  value={ratings[key][questions[key].indexOf(question)]}
+                >
                   <option value="0">Seleccionar</option>
                   <option value="1">1 - Muy malo</option>
                   <option value="2">2 - Malo</option>
@@ -189,7 +227,6 @@ const EvaluationForm = () => {
                   <option value="4">4 - Bueno</option>
                   <option value="5">5 - Muy bueno</option>
                 </select>
-                {/* Mostrar el comentario solo si la calificación es entre 1 y 3 */}
                 {(ratings[key][questions[key].indexOf(question)] >= 1 && 
                   ratings[key][questions[key].indexOf(question)] <= 3) && (
                   <textarea
@@ -197,7 +234,7 @@ const EvaluationForm = () => {
                     onChange={(e) => handleCommentChange(key, question.id, e.target.value)}
                     placeholder="Comentario sobre esta pregunta"
                     rows="2"
-                    cols="50"
+                    className="evaluation-textarea"
                   />
                 )}
               </div>
@@ -212,13 +249,20 @@ const EvaluationForm = () => {
           onChange={(e) => handleGeneralCommentChange(e.target.value)} 
           placeholder="Escribe tus comentarios generales aquí..."
           rows="4"
-          cols="50"
+          className="evaluation-textarea"
         />
 
-        <button type="submit">Enviar Calificación</button>
-        <Link to="/evaluar">Volver a la lista de productos</Link>
+        <motion.button 
+          type="submit" 
+          className="evaluation-submit"
+          disabled={!isFormComplete() || loading} // Deshabilitar si no está completo o si está cargando
+          whileHover={!loading && isFormComplete() ? { scale: 1.05 } : {}} // Desactivar animación si está deshabilitado
+        >
+          {loading ? "Enviando..." : "Enviar Calificación"}
+        </motion.button>
+        <Link to="/evaluar" className="evaluation-link">Volver a la lista de productos</Link>
       </form>
-    </div>
+    </motion.div>
   );
 };
 

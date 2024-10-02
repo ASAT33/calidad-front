@@ -139,6 +139,7 @@ function Header({ onLocationChange }) {
       <AppBar style={{ background: "#5d6d7e", padding: "0px" }} position="absolute" open={open}>
         <Toolbar>
           <MenuIcon
+            className="menu-icon"
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -156,6 +157,7 @@ function Header({ onLocationChange }) {
 
           {navItems.map((item) => (
             <Button
+              className="header-button"
               key={item.label}
               sx={{ color: "#fff" }}
               onClick={() => handleNavigation(item.path)}
@@ -165,6 +167,7 @@ function Header({ onLocationChange }) {
           ))}
 
           <IconButton
+            className="profile-icon"
             size="large"
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -175,6 +178,7 @@ function Header({ onLocationChange }) {
             <AccountCircle />
           </IconButton>
           <Menu
+            className="menu-appbar"
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{

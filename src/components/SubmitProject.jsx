@@ -23,7 +23,6 @@ const SubmitProject = () => {
     e.preventDefault();
 
     const user_id = sessionStorage.getItem('user_id'); // Obtener user_id desde sessionStorage
-    console.log(user_id); // Verificar si user_id es null
 
     if (!user_id) {
       console.error('User ID no encontrado en sessionStorage');
@@ -50,11 +49,16 @@ const SubmitProject = () => {
       alignItems: 'center', 
       justifyContent: 'center', 
       p: 3, 
-      bgcolor: 'background.default', 
-      minHeight: '80vh' 
+      bgcolor: '#f4f6f9', // Fondo suave
+      minHeight: '100vh', 
     }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-        <Typography variant="h4" gutterBottom align="center" color="primary">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ duration: 0.6 }}
+        style={{ width: '100%', maxWidth: '600px', backgroundColor: '#fff', padding: '2rem', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }}
+      >
+        <Typography variant="h4" gutterBottom align="center" color="primary" sx={{ fontWeight: 'bold', mb: 2 }}>
           ¡Sube Tu Proyecto de Software!
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" gutterBottom>
@@ -75,48 +79,86 @@ const SubmitProject = () => {
           </Snackbar>
         )}
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Nombre del Proyecto"
-                name="name"
-                value={projectData.name}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                color="primary"
-              />
+              <motion.div 
+                whileHover={{ scale: 1.03 }} 
+                transition={{ duration: 0.3 }}
+              >
+                <TextField
+                  fullWidth
+                  label="Nombre del Proyecto"
+                  name="name"
+                  value={projectData.name}
+                  onChange={handleChange}
+                  required
+                  variant="outlined"
+                  color="primary"
+                  sx={{ backgroundColor: '#f9f9f9', borderRadius: 1 }}
+                />
+              </motion.div>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Link"
-                name="link_or_executable"
-                value={projectData.link_or_executable}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                color="primary"
-              />
+              <motion.div 
+                whileHover={{ scale: 1.03 }} 
+                transition={{ duration: 0.3 }}
+              >
+                <TextField
+                  fullWidth
+                  label="Link del Proyecto"
+                  name="link_or_executable"
+                  value={projectData.link_or_executable}
+                  onChange={handleChange}
+                  required
+                  variant="outlined"
+                  color="primary"
+                  sx={{ backgroundColor: '#f9f9f9', borderRadius: 1 }}
+                />
+              </motion.div>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Descripción"
-                name="description"
-                value={projectData.description}
-                onChange={handleChange}
-                variant="outlined"
-                color="primary"
-                multiline // Hacer el campo multiline
-                rows={4} // Número de filas visible
-              />
+              <motion.div 
+                whileHover={{ scale: 1.03 }} 
+                transition={{ duration: 0.3 }}
+              >
+                <TextField
+                  fullWidth
+                  label="Descripción del Proyecto"
+                  name="description"
+                  value={projectData.description}
+                  onChange={handleChange}
+                  variant="outlined"
+                  color="primary"
+                  multiline
+                  rows={4}
+                  sx={{ backgroundColor: '#f9f9f9', borderRadius: 1 }}
+                />
+              </motion.div>
             </Grid>
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>
-                ¡Subir Proyecto!
-              </Button>
+              <motion.div 
+                whileHover={{ scale: 1.05 }} 
+                transition={{ duration: 0.3 }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    py: 1.5,
+                    fontWeight: 'bold',
+                    boxShadow: '0 3px 6px rgba(0, 0, 0, 0.1)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      boxShadow: '0 6px 12px rgba(0, 0, 0, 0.2)',
+                      backgroundColor: '#3f51b5',
+                    },
+                  }}
+                >
+                  ¡Subir Proyecto!
+                </Button>
+              </motion.div>
             </Grid>
           </Grid>
         </form>
