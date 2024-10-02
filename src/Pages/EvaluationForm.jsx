@@ -33,7 +33,11 @@ const EvaluationForm = () => {
 
   const [comments, setComments] = useState({
     general: '', // Initialize general comments
-  }); // Estado para manejar los comentarios por pregunta
+  });
+
+  const [loading, setLoading] = useState(false); // Estado para manejar la carga del envío
+  const [successMessage, setSuccessMessage] = useState(''); // Mensaje de éxito
+  const [errorMessage, setErrorMessage] = useState(''); // Mensaje de error
 
   // Llamada a la API para obtener el producto
   useEffect(() => {
@@ -92,6 +96,7 @@ const EvaluationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Deshabilitar botón de envío mientras se procesa
 
     const evaluationData = {
       software_id: id, // ID del producto
@@ -107,12 +112,32 @@ const EvaluationForm = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/evaluations', evaluationData);
-      console.log("Evaluación guardada:", response.data);
-      // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
+      await axios.post('http://localhost:5000/api/evaluations', evaluationData);
+      setSuccessMessage("¡Evaluación enviada con éxito! 🎉"); // Mostrar mensaje de éxito
+      setErrorMessage(''); // Limpiar mensajes de error
+      setLoading(false); // Habilitar el botón nuevamente
+      setRatings({ // Limpiar calificaciones
+        functionality: [0, 0, 0],
+        reliability: [0, 0, 0],
+        usability: [0, 0, 0],
+        maintainability: [0, 0, 0],
+        portability: [0, 0, 0],
+        efficiency: [0, 0, 0],
+        security: [0, 0, 0],
+      });
+      setComments({ general: '' }); // Limpiar comentarios
     } catch (error) {
-      console.error("Error al guardar la evaluación:", error);
+      setErrorMessage("Hubo un error al enviar la evaluación. Inténtalo nuevamente.");
+      setSuccessMessage(''); // Limpiar mensajes de éxito
+      setLoading(false); // Habilitar el botón nuevamente
     }
+  };
+
+  // Verificar si todos los campos están completos
+  const isFormComplete = () => {
+    return Object.values(ratings).every((categoryRatings) =>
+      categoryRatings.every((rating) => rating > 0)
+    );
   };
 
   // Mostrar mensaje de carga si no se ha obtenido el producto
@@ -141,6 +166,10 @@ const EvaluationForm = () => {
         </p>
       </div>
 
+      {/* Mostrar mensajes de éxito o error */}
+      {successMessage && <div className="success-message">{successMessage}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+
       <form onSubmit={handleSubmit}>
         {/* Funcionalidad */}
         <h3>Funcionalidad</h3>
@@ -150,6 +179,7 @@ const EvaluationForm = () => {
             <select 
               onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)} 
               className="evaluation-select"
+              value={ratings.functionality[questions.functionality.indexOf(question)]}
             >
               <option value="0">Seleccionar</option>
               <option value="1">1 - Muy malo</option>
@@ -188,6 +218,7 @@ const EvaluationForm = () => {
                 <select 
                   onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)} 
                   className="evaluation-select"
+                  value={ratings[key][questions[key].indexOf(question)]}
                 >
                   <option value="0">Seleccionar</option>
                   <option value="1">1 - Muy malo</option>
@@ -224,9 +255,10 @@ const EvaluationForm = () => {
         <motion.button 
           type="submit" 
           className="evaluation-submit"
-          whileHover={{ scale: 1.05 }}
+          disabled={!isFormComplete() || loading} // Deshabilitar si no está completo o si está cargando
+          whileHover={!loading && isFormComplete() ? { scale: 1.05 } : {}} // Desactivar animación si está deshabilitado
         >
-          Enviar Calificación
+          {loading ? "Enviando..." : "Enviar Calificación"}
         </motion.button>
         <Link to="/evaluar" className="evaluation-link">Volver a la lista de productos</Link>
       </form>
