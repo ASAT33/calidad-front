@@ -28,8 +28,15 @@ const PageEvaluator = () => {
   }, []); // El array vacío asegura que se ejecute solo al montar el componente
 
   if (loading) {
-    return <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>Cargando proyectos...</motion.p>; // Mostrar un mensaje mientras carga
+    return (
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+        Cargando proyectos...
+      </motion.p>
+    ); // Mostrar un mensaje mientras carga
   }
+
+  // Filtrar los proyectos para solo incluir aquellos no evaluados
+  const filteredProjects = projects.filter(project => project.evaluado === 0);
 
   return (
     <motion.div 
@@ -39,11 +46,11 @@ const PageEvaluator = () => {
       className="page-evaluator"
     >
       <h1 className="page-title">Lista de Proyectos para Evaluar</h1>
-      {projects.length === 0 ? ( // Verificar si no hay proyectos
+      {filteredProjects.length === 0 ? ( // Verificar si no hay proyectos
         <p>No hay proyectos disponibles para evaluar.</p>
       ) : (
         <ul className="product-list">
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <motion.li
               className="product-item"
               key={project.id}

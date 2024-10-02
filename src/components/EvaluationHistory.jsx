@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, List, ListItem, ListItemText, Divider, Paper, Grid } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { motion } from 'framer-motion'; // Importar para animaciones
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom'; // Importar Link para la navegación
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -11,14 +12,25 @@ const EvaluationHistory = () => {
   const [evaluations, setEvaluations] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Obtener el ID del usuario logueado desde sessionStorage y convertirlo a número
+  const userId = parseInt(sessionStorage.getItem('user_id'), 10);
+  console.log("User ID from session storage:", userId); // Asegúrate de que el ID sea correcto
+
   // Llamada al endpoint para obtener las evaluaciones
   useEffect(() => {
     const fetchEvaluations = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/calificado'); // Llamada al endpoint
-        const data = await response.json(); // Parsear la respuesta como JSON
-        setEvaluations(data); // Actualizar el estado con las evaluaciones obtenidas
-        setLoading(false); // Terminar la carga
+        const response = await fetch('http://localhost:5000/api/calificado');
+        const data = await response.json();
+
+        console.log("All evaluations:", data); // Imprimir todas las evaluaciones para depuración
+
+        // Filtrar las evaluaciones del usuario logueado
+        const userEvaluations = data.filter(evaluation => evaluation.id_usuario === userId);
+        console.log("Filtered evaluations for user:", userEvaluations); // Imprimir las evaluaciones filtradas para depuración
+        
+        setEvaluations(userEvaluations);
+        setLoading(false);
       } catch (error) {
         console.error('Error al cargar las evaluaciones:', error);
         setLoading(false);
@@ -26,9 +38,9 @@ const EvaluationHistory = () => {
     };
 
     fetchEvaluations();
-  }, []);
+  }, [userId]);
 
-  const totalProjects = 10; // Total de proyectos a evaluar (esto puede venir de la API también si es dinámico)
+  const totalProjects = 10; // Total de proyectos a evaluar
   const evaluatedCount = evaluations.length; // Número de evaluaciones realizadas
   const pendingCount = totalProjects - evaluatedCount; // Número de evaluaciones pendientes
 
@@ -47,8 +59,8 @@ const EvaluationHistory = () => {
 
   const options = {
     maintainAspectRatio: false,
-    animation: false, // Desactivar la animación
-    responsive: false, // Hacer el gráfico de un tamaño fijo
+    animation: false,
+    responsive: false,
   };
 
   if (loading) {
@@ -57,9 +69,9 @@ const EvaluationHistory = () => {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: -20 }} // Iniciar con opacidad 0 y ligeramente arriba
-      animate={{ opacity: 1, y: 0 }} // Finalizar con opacidad 1 y en su posición
-      transition={{ duration: 0.5 }} // Duración de la transición
+      initial={{ opacity: 0, y: -20 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.5 }}
     >
       <Box p={3} display="flex" flexDirection="column" alignItems="center" minHeight="100vh">
         <Typography variant="h4" align="center" gutterBottom>
@@ -71,15 +83,21 @@ const EvaluationHistory = () => {
             <Paper elevation={0} style={{ padding: '20px', maxWidth: '100%' }}>
               <List>
                 {evaluations.map((evaluation) => (
-                  <React.Fragment key={evaluation.id}>
-                    <ListItem>
-                      <ListItemText
-                        primary={`Proyecto: ${evaluation.nombre_software}`}
-                        secondary={`Fecha: ${evaluation.fecha} - Comentario: ${evaluation.comentario}`}
-                      />
-                    </ListItem>
-                    <Divider />
-                  </React.Fragment>
+                  <Link 
+                    to={`/evaluados/${evaluation.id_evaluacion}`} // Cambia a la ruta deseada
+                    key={evaluation.id_evaluacion} 
+                    style={{ textDecoration: 'none', color: 'inherit' }} // Estilos para el Link
+                  >
+                    <React.Fragment>
+                      <ListItem>
+                        <ListItemText
+                          primary={`Proyecto: ${evaluation.nombre_proyecto}`} 
+                          secondary={`Comentario: ${evaluation.comentario_general}`} 
+                        />
+                      </ListItem>
+                      <Divider />
+                    </React.Fragment>
+                  </Link>
                 ))}
               </List>
             </Paper>

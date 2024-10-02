@@ -75,7 +75,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const navItems = [
   { label: "Evaluar", path: "/evaluar" },
   { label: "Usuario", path: "/enviar" },
-  { label: "Historial", path: "/historial" },
+  { label: "Evaluados(usuario)", path: "/evaluados" },
+  { label: "Evaluados(evaluador)", path: "/historial" },
 ];
 
 function Header({ onLocationChange }) {
@@ -256,7 +257,7 @@ function Header({ onLocationChange }) {
           </Link>
         </div>
         <div className="menu-item">
-          <Link to="/historial" className="sidebar-links">
+          <Link to="/evaluados" className="sidebar-links">
             <HistoryIcon className="icon" />
             Historial
           </Link>

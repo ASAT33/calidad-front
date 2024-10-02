@@ -266,7 +266,7 @@ const EvaluationForm = () => {
         <motion.button 
           type="submit" 
           className="evaluation-submit"
-          disabled={!isFormComplete() || loading} // Deshabilitar si no está completo o si está cargando
+          //disabled={!isFormComplete() || loading} // Deshabilitar si no está completo o si está cargando
           whileHover={!loading && isFormComplete() ? { scale: 1.05 } : {}} // Desactivar animación si está deshabilitado
         >
           {loading ? "Enviando..." : "Enviar Calificación"}
