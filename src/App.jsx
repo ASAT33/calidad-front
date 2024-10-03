@@ -9,6 +9,8 @@ import EvaluationForm from "./Pages/EvaluationForm";
 import PrivateRoute from "./Pages/PrivateRoutes";
 import SubmitProject from "./components/SubmitProject";
 import EvaluationHistory from "./components/EvaluationHistory";
+import EvaluationHistory2 from "./components/EvaluationHistory2";
+import Calificacion2 from "./Pages/Calificacion2"
 import Calificacion from "./Pages/Calificacion"
 
 
@@ -27,14 +29,14 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />}></Route>
-         { <Route path="/enviar" element={<PrivateRoute requiredRole="evaluator"> <SubmitProject /></PrivateRoute>} />}
+         { <Route path="/enviar" element={<PrivateRoute requiredRole="user"> <SubmitProject /></PrivateRoute>} />}
           <Route path="/evaluar" element={<PrivateRoute requiredRole="evaluator"> <PageEvaluator /></PrivateRoute>} />
           <Route path="/evaluar/:id" element={<PrivateRoute requiredRole="evaluator"> <EvaluationForm /></PrivateRoute>} />
-         <Route path="/evaluados" element={<PrivateRoute requiredRole="evaluator"> <EvaluationHistory /></PrivateRoute>} />
-         <Route path="/evaluados/:id" element={<PrivateRoute requiredRole="evaluator"> <Calificacion/></PrivateRoute>} />
+         <Route path="/evaluados" element={<PrivateRoute requiredRole="user"> <EvaluationHistory /></PrivateRoute>} />
+         <Route path="/evaluados/:id" element={<PrivateRoute requiredRole="user"> <Calificacion/></PrivateRoute>} />
 
-         <Route path="/historial" element={<PrivateRoute requiredRole="evaluator"> <EvaluationHistory /></PrivateRoute>} />
-         <Route path="/historial/:id" element={<PrivateRoute requiredRole="evaluator"> <Calificacion/></PrivateRoute>} />
+         <Route path="/historial" element={<PrivateRoute requiredRole="evaluator"> <EvaluationHistory2 /></PrivateRoute>} />
+         <Route path="/historial/:id" element={<PrivateRoute requiredRole="evaluator"> <Calificacion2/></PrivateRoute>} />
          
          <Route path="/perfil" element={<PrivateRoute requiredRole="evaluator"> <Perfil /></PrivateRoute>} />
           <Route path="/perfil" element={<PrivateRoute requiredRole="user"> <Perfil /></PrivateRoute>} />
