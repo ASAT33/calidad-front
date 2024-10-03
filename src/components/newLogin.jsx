@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Tabs, Tab } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -11,10 +11,19 @@ const AuthModal = ({ open, handleClose }) => {
         name: '',
         email: '',
         password: '',
-        role: 'evaluator', // Valor por defecto
+        role: 'evaluator', 
     });
 
     const navigate = useNavigate();
+
+    
+    useEffect(() => {
+        if (open) {
+            setTab(0); 
+            setLoginData({ email: '', password: '' }); 
+            setRegisterData({ name: '', email: '', password: '', role: 'evaluator' }); 
+        }
+    }, [open]);
 
     const handleTabChange = (event, newValue) => {
         setTab(newValue);
@@ -40,14 +49,13 @@ const AuthModal = ({ open, handleClose }) => {
             const response = await axios.post('http://localhost:5000/users/login', loginData);
             const { token, user } = response.data;
 
-            // Guardar token y rol en sessionStorage
             sessionStorage.setItem('token', token);
             sessionStorage.setItem('role', user.role);
-            sessionStorage.setItem('user_id',user.id);
+            sessionStorage.setItem('user_id', user.id);
             console.log("Login exitoso:", user.id);
 
             handleClose();
-            navigate('/'); // Redirigir después del inicio de sesión
+            navigate('/'); 
         } catch (error) {
             console.error('Error al iniciar sesión!', error);
             alert('Error al iniciar sesión: ' + (error.response?.data?.message || error.message));
@@ -58,20 +66,20 @@ const AuthModal = ({ open, handleClose }) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/users/register', registerData);
-    
-            // Log the success message
+
+            
             console.log("Registro exitoso:", response.data.message);
-    
-            // Resetear formulario y cerrar modal
+
+         
             setRegisterData({ name: '', email: '', password: '', role: 'evaluator' });
             handleClose();
-            navigate('/'); // Redirigir después del registro
+            navigate('/'); 
         } catch (error) {
             console.error('Error al registrar el usuario!', error);
             alert('Error al registrar el usuario: ' + (error.response?.data?.message || error.message));
         }
     };
-    
+
     return (
         <Modal open={open} onClose={handleClose}>
             <Box sx={style}>

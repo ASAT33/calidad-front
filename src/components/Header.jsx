@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -16,15 +16,15 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import HomeIcon from "@mui/icons-material/Home";  // Icon for Home
-import PersonIcon from "@mui/icons-material/Person"; // Icon for Perfil
-import HistoryIcon from "@mui/icons-material/History"; // Icon for Historial
-import AssessmentIcon from "@mui/icons-material/Assessment"; // Icon for Evaluar
-import DescriptionIcon from "@mui/icons-material/Description"; // Icon for Norma ISO25010
+import HomeIcon from "@mui/icons-material/Home";
+import PersonIcon from "@mui/icons-material/Person";
+import HistoryIcon from "@mui/icons-material/History";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import DescriptionIcon from "@mui/icons-material/Description";
 import logo from "../assets/logo2.png";
 import "./Header.css";
-import { logout } from "../utils/auth";
-import AuthModal from "./newLogin";
+import { logout } from "../utils/auth"; // Assuming you have a logout utility function
+import AuthModal from "./newLogin"; // Your AuthModal component
 
 const drawerWidth = 300;
 
@@ -72,21 +72,35 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-start",
 }));
 
-const navItems = [
-  { label: "Evaluar", path: "/evaluar" },
-  { label: "Usuario", path: "/enviar" },
-  { label: "Evaluados(usuario)", path: "/evaluados" },
-  { label: "Evaluados(evaluador)", path: "/historial" },
-];
+// Define the navigation items based on roles
+const navItems = {
+  evaluator: [
+    { label: "Evaluar(evaluator)", path: "/evaluar" },
+    { label: "Evaluated(evaluator)", path: "/historial" },
+  ],
+  user: [
+    { label: "User", path: "/enviar" },
+    { label: "Evaluated(user)", path: "/evaluados" },
+  ],
+  common: [
+    { label: "Inicio", path: "/" },
+    { label: "Norma ISO25010", path: "/Iso" },
+  ],
+};
 
-function Header({ onLocationChange }) {
-  const [opens, setModalLoginOpen] = useState(false);
-  const handleOpen = () => setModalLoginOpen(true);
-  const handleCloses = () => setModalLoginOpen(false);
+function Header() {
+  const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // Modal for login
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // To track login status
   const [anchorEl, setAnchorEl] = useState(null);
   const theme = useTheme();
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const userRole = sessionStorage.getItem('role'); // Get user role from sessionStorage
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setIsAuthenticated(!!token); // Check if the user is authenticated
+  }, []);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
@@ -94,10 +108,6 @@ function Header({ onLocationChange }) {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const handleNavigation = (path) => {
-    navigate(path);
   };
 
   const handleMenu = (event) => {
@@ -109,29 +119,21 @@ function Header({ onLocationChange }) {
   };
 
   const handleLogout = () => {
-    logout(navigate);
-    handleClose();
+    logout(navigate); // Perform the logout function
+    setIsAuthenticated(false); // Update state
+    handleClose(); // Close the menu
   };
 
-  // Language options
-  const [languageMenuAnchor, setLanguageMenuAnchor] = useState(null);
-  const languages = [
-    { code: "en", label: "English" },
-    { code: "es", label: "Spanish" },
-    { code: "fr", label: "French" },
-  ];
-
-  const handleLanguageMenuOpen = (event) => {
-    setLanguageMenuAnchor(event.currentTarget);
+  const handleLoginClick = () => {
+    setModalOpen(true); // Open the login modal
+    handleClose(); // Close the menu
   };
 
-  const handleLanguageMenuClose = () => {
-    setLanguageMenuAnchor(null);
-  };
-
-  const handleLanguageChange = (language) => {
-    console.log("Language selected:", language);
-    handleLanguageMenuClose();
+  const handleModalClose = () => {
+    setModalOpen(false);
+    // Check again if the user is logged in after the modal is closed
+    const token = sessionStorage.getItem('token');
+    if (token) setIsAuthenticated(true);
   };
 
   return (
@@ -148,24 +150,36 @@ function Header({ onLocationChange }) {
             sx={{ mr: 2 }}
           />
           <Typography variant="h4" noWrap component="div" sx={{ flexGrow: 2 }}>
-            <img
-              className="logo"
-              src={logo}
-              onClick={() => handleNavigation("/")}
-              alt="logo"
-            />
+            <img className="logo" src={logo} onClick={() => navigate("/")} alt="logo" />
           </Typography>
 
-          {navItems.map((item) => (
+          {/* Render common nav items for all users */}
+          {navItems.common.map((item) => (
             <Button
               className="header-button"
               key={item.label}
               sx={{ color: "#fff" }}
-              onClick={() => handleNavigation(item.path)}
+              onClick={() => navigate(item.path)}
             >
               {item.label}
             </Button>
           ))}
+
+          {/* Render role-specific nav items only if authenticated */}
+          {isAuthenticated && (
+            <>
+              {(userRole === "evaluator" ? navItems.evaluator : navItems.user).map((item) => (
+                <Button
+                  className="header-button"
+                  key={item.label}
+                  sx={{ color: "#fff" }}
+                  onClick={() => navigate(item.path)}
+                >
+                  {item.label}
+                </Button>
+              ))}
+            </>
+          )}
 
           <IconButton
             className="profile-icon"
@@ -194,25 +208,13 @@ function Header({ onLocationChange }) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={() => { handleOpen(); handleClose(); }}>
-              Login
-            </MenuItem>
-            <AuthModal open={opens} handleClose={handleCloses} />
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            {!isAuthenticated ? (
+              <MenuItem onClick={handleLoginClick}>Login</MenuItem>
+            ) : (
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            )}
           </Menu>
-
-          {/* Language Menu */}
-          <Menu
-            anchorEl={languageMenuAnchor}
-            open={Boolean(languageMenuAnchor)}
-            onClose={handleLanguageMenuClose}
-          >
-            {languages.map((lang) => (
-              <MenuItem key={lang.code} onClick={() => handleLanguageChange(lang)}>
-                {lang.label}
-              </MenuItem>
-            ))}
-          </Menu>
+          <AuthModal open={modalOpen} handleClose={handleModalClose} />
         </Toolbar>
       </AppBar>
       <MuiDrawer
@@ -222,7 +224,7 @@ function Header({ onLocationChange }) {
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
-            backgroundColor: "#f8f9fa", // Fondo claro para el sidebar
+            backgroundColor: "#f8f9fa",
           },
         }}
         variant="persistent"
@@ -238,28 +240,30 @@ function Header({ onLocationChange }) {
           </IconButton>
         </DrawerHeader>
         <Divider />
+        {/* Add drawer navigation items based on authentication */}
         <div className="menu-item">
           <Link to="/perfil" className="sidebar-links">
             <PersonIcon className="icon" />
             Perfil
           </Link>
         </div>
+        {isAuthenticated && (
+          <>
+            {/* Render role-specific items in the drawer */}
+            {(userRole === "evaluator" ? navItems.evaluator : navItems.user).map((item) => (
+              <div className="menu-item" key={item.label}>
+                <Link to={item.path} className="sidebar-links">
+                  <AssessmentIcon className="icon" />
+                  {item.label}
+                </Link>
+              </div>
+            ))}
+          </>
+        )}
         <div className="menu-item">
           <Link to="/" className="sidebar-links">
             <HomeIcon className="icon" />
             Inicio
-          </Link>
-        </div>
-        <div className="menu-item">
-          <Link to="/enviar" className="sidebar-links">
-            <AssessmentIcon className="icon" />
-            Evaluar
-          </Link>
-        </div>
-        <div className="menu-item">
-          <Link to="/evaluados" className="sidebar-links">
-            <HistoryIcon className="icon" />
-            Historial
           </Link>
         </div>
         <div className="menu-item">
@@ -268,6 +272,7 @@ function Header({ onLocationChange }) {
             Norma ISO25010
           </Link>
         </div>
+        <Divider />
       </MuiDrawer>
       <Main style={{ padding: "0px" }} open={open}>
         <DrawerHeader />

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const EvaluationHistory = () => {
+const EvaluationHistory2 = () => {
   const [evaluations, setEvaluations] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +19,7 @@ const EvaluationHistory = () => {
         const response = await fetch('http://localhost:5000/api/calificado');
         const data = await response.json();
 
-        const userEvaluations = data.filter(evaluation => evaluation.id_usuario === userId);
+        const userEvaluations = data.filter(evaluation => evaluation.id_evaluador === userId);
         
         setEvaluations(userEvaluations);
         setLoading(false);
@@ -67,7 +67,7 @@ const EvaluationHistory = () => {
     >
       <Box p={3} display="flex" flexDirection="column" alignItems="center" minHeight="100vh">
         <Typography variant="h4" align="center" gutterBottom>
-          Evaluaciones
+          Historial de Evaluaciones
         </Typography>
         
         <Grid container spacing={3} justifyContent="center">
@@ -76,7 +76,7 @@ const EvaluationHistory = () => {
               <List>
                 {evaluations.map((evaluation) => (
                   <Link 
-                    to={`/evaluados/${evaluation.id_evaluacion}`} 
+                    to={`/historial/${evaluation.id_evaluacion}`} 
                     key={evaluation.id_evaluacion} 
                     style={{ textDecoration: 'none', color: 'inherit' }}
                   >
@@ -92,18 +92,18 @@ const EvaluationHistory = () => {
               </List>
             </Paper>
           </Grid>
-         {/* <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
             <Paper elevation={0} style={{ padding: '20px', maxWidth: '100%', height: '400px' }}>
               <Typography variant="h5" align="center" gutterBottom>
                 Gráfico de Evaluaciones
               </Typography>
               <Bar data={data} options={options} height={400} />
             </Paper>
-          </Grid>*/}
+          </Grid>
         </Grid>
       </Box>
     </motion.div>
   );
 };
 
-export default EvaluationHistory;
+export default EvaluationHistory2;

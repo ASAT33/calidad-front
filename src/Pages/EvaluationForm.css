@@ -147,3 +147,29 @@
   padding: 10px;
   border-radius: 8px;
 }
+
+.back-button {
+  background-color: #447a94; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  padding: 10px 20px; /* Espaciado interno */
+  font-size: 16px; /* Tamaño de la fuente */
+  cursor: pointer; /* Cambia el cursor al pasar el ratón */
+  transition: background-color 0.3s, transform 0.2s; /* Transición suave */
+  text-decoration: none; /* Sin subrayado */
+}
+
+.back-button:hover {
+  background-color: #16457e; /* Color de fondo al pasar el ratón */
+}
+
+.back-button:disabled {
+  background-color: #ccc; /* Color de fondo cuando está deshabilitado */
+  cursor: not-allowed; /* Cambia el cursor cuando está deshabilitado */
+}
+
+.back-link {
+  color: white; /* Color del texto del enlace */
+  text-decoration: none; /* Sin subrayado */
+}

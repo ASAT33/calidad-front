@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react"; // Importar useMemo desde React
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion"; // Importar para animaciones
@@ -6,6 +6,7 @@ import "./EvaluationForm.css"; // Asegúrate de tener este archivo CSS para el e
 
 const EvaluationForm = () => {
   const { id } = useParams(); // Obtener el ID del producto desde la URL
+  const userId = useMemo(() => parseInt(sessionStorage.getItem('user_id'), 10), []); // Asegurarse de obtener el userId correctamente
 
   // Estado para el producto cargado
   const [product, setProduct] = useState(null);
@@ -17,7 +18,6 @@ const EvaluationForm = () => {
     usability: [],
     maintainability: [],
     portability: [],
-    efficiency: [],
     security: [],
     compatibility: [],  // Nueva categoría
     fiability: [],      // Nueva categoría
@@ -29,7 +29,6 @@ const EvaluationForm = () => {
     usability: [0, 0, 0],
     maintainability: [0, 0, 0],
     portability: [0, 0, 0],
-    efficiency: [0, 0, 0],
     security: [0, 0, 0],
     compatibility: [0, 0, 0],  // Nueva categoría
     fiability: [0, 0, 0],      // Nueva categoría
@@ -42,6 +41,7 @@ const EvaluationForm = () => {
   const [loading, setLoading] = useState(false); // Estado para manejar la carga del envío
   const [successMessage, setSuccessMessage] = useState(''); // Mensaje de éxito
   const [errorMessage, setErrorMessage] = useState(''); // Mensaje de error
+  const [isFormLocked, setIsFormLocked] = useState(false); // Estado para bloquear el formulario
 
   // Llamada a la API para obtener el producto
   useEffect(() => {
@@ -100,46 +100,72 @@ const EvaluationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Deshabilitar botón de envío mientras se procesa
+    setLoading(true); // Disable submit button while processing
+
+    // Check for any empty ratings or comments
+    const allRatingsComplete = Object.values(ratings).every((categoryRatings) =>
+      categoryRatings.every((rating) => rating > 0)
+    );
+
+    const allCommentsComplete = Object.keys(comments).every((key) => {
+      if (key === 'general') {
+        return comments[key].trim() !== ''; // General comments must not be empty
+      }
+      // Check for individual comments
+      return Object.keys(ratings).some((category) =>
+        questions[category].some((question) => {
+          const questionId = question.id;
+          return comments[`${category}_${questionId}`] && comments[`${category}_${questionId}`].trim() !== '';
+        })
+      );
+    });
+
+    if (!allRatingsComplete || !allCommentsComplete) {
+      setErrorMessage("Por favor, completa todas las calificaciones y comentarios.");
+      setLoading(false); // Re-enable the button
+      return; // Stop submission if validation fails
+    }
 
     const evaluationData = {
-      software_id: id, // ID del producto
-      evaluator_id: product.user_id, 
-      comentario_general: comments.general || '', // Asegúrate de incluir el comentario general
+      software_id: id, // Product ID
+      evaluator_id: userId, // Make sure userId is correct
+      comentario_general: comments.general || '', // Include general comment
       answers: Object.keys(ratings).map((category) => {
         return ratings[category].map((calificacion, index) => {
-          // Verificar si hay preguntas en la categoría y si el índice es válido
+          // Check if there are questions in the category and if the index is valid
           if (questions[category] && questions[category][index]) {
             return {
               question_id: questions[category][index].id,
               calificacion: calificacion,
-              comentario_categoria: comments[`${category}_${questions[category][index].id}`] || '', // Obtener el comentario por pregunta
+              comentario_categoria: comments[`${category}_${questions[category][index].id}`] || '', // Get comment per question
             };
           }
-          return null; // Retornar null si no hay pregunta
-        }).filter(answer => answer !== null); // Filtrar respuestas nulas
-      }).flat(), // Aplana el array
+          return null; // Return null if there is no question
+        }).filter(answer => answer !== null); // Filter out null answers
+      }).flat(), // Flatten the array
     };
 
     try {
       await axios.post('http://localhost:5000/api/evaluations', evaluationData);
-      setSuccessMessage("¡Evaluación enviada con éxito! 🎉"); // Mostrar mensaje de éxito
-      setErrorMessage(''); // Limpiar mensajes de error
-      setLoading(false); // Habilitar el botón nuevamente
-      setRatings({ // Limpiar calificaciones
+      setSuccessMessage("¡Evaluación enviada con éxito! 🎉"); // Show success message
+      setErrorMessage(''); // Clear error messages
+      setIsFormLocked(true); // Lock the form after successful submission
+      setLoading(false); // Re-enable the button
+      setRatings({ // Clear ratings
         functionality: [0, 0, 0],
         reliability: [0, 0, 0],
         usability: [0, 0, 0],
         maintainability: [0, 0, 0],
         portability: [0, 0, 0],
-        efficiency: [0, 0, 0],
         security: [0, 0, 0],
+        compatibility: [0, 0, 0],  // Nueva categoría
+        fiability: [0, 0, 0],      // Nueva categoría
       });
-      setComments({ general: '' }); // Limpiar comentarios
+      setComments({ general: '' }); // Clear comments
     } catch (error) {
       setErrorMessage("Hubo un error al enviar la evaluación. Inténtalo nuevamente.");
-      setSuccessMessage(''); // Limpiar mensajes de éxito
-      setLoading(false); // Habilitar el botón nuevamente
+      setSuccessMessage(''); // Clear success messages
+      setLoading(false); // Re-enable the button
     }
   };
 
@@ -176,10 +202,6 @@ const EvaluationForm = () => {
         </p>
       </div>
 
-      {/* Mostrar mensajes de éxito o error */}
-      {successMessage && <div className="success-message">{successMessage}</div>}
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-
       <form onSubmit={handleSubmit}>
         {/* Funcionalidad */}
         <h3>Funcionalidad</h3>
@@ -190,6 +212,7 @@ const EvaluationForm = () => {
               onChange={(e) => handleChange("functionality", questions.functionality.indexOf(question), e.target.value)} 
               className="evaluation-select"
               value={ratings.functionality[questions.functionality.indexOf(question)]}
+              disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
             >
               <option value="0">Seleccionar</option>
               <option value="1">1 - Muy malo</option>
@@ -206,6 +229,7 @@ const EvaluationForm = () => {
                 placeholder="Comentario sobre esta pregunta"
                 rows="2"
                 className="evaluation-textarea"
+                disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
               />
             )}
           </div>
@@ -230,6 +254,7 @@ const EvaluationForm = () => {
                   onChange={(e) => handleChange(key, questions[key].indexOf(question), e.target.value)} 
                   className="evaluation-select"
                   value={ratings[key][questions[key].indexOf(question)]}
+                  disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
                 >
                   <option value="0">Seleccionar</option>
                   <option value="1">1 - Muy malo</option>
@@ -246,33 +271,48 @@ const EvaluationForm = () => {
                     placeholder="Comentario sobre esta pregunta"
                     rows="2"
                     className="evaluation-textarea"
+                    disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
                   />
                 )}
               </div>
-            ))}
+            ))} 
           </div>
         ))}
 
-        {/* Comentarios generales */}
-        <h3>Comentarios generales</h3>
+        <h3>Comentario General</h3>
         <textarea
-          value={comments.general} 
-          onChange={(e) => handleGeneralCommentChange(e.target.value)} 
-          placeholder="Escribe tus comentarios generales aquí..."
-          rows="4"
+          value={comments.general}
+          onChange={(e) => handleGeneralCommentChange(e.target.value)}
+          placeholder="Escribe tu comentario general aquí..."
+          rows="3"
           className="evaluation-textarea"
+          disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
         />
+
+        {/* Mostrar mensajes de éxito o error */}
+        {successMessage && <div className="success-message">{successMessage}</div>}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
 
         <motion.button 
           type="submit" 
           className="evaluation-submit"
-          //disabled={!isFormComplete() || loading} // Deshabilitar si no está completo o si está cargando
+          disabled={isFormLocked} // Deshabilitar si el formulario está bloqueado
           whileHover={!loading && isFormComplete() ? { scale: 1.05 } : {}} // Desactivar animación si está deshabilitado
         >
           {loading ? "Enviando..." : "Enviar Calificación"}
+          
         </motion.button>
-        <Link to="/evaluar" className="evaluation-link">Volver a la lista de productos</Link>
+        <motion.button 
+          className="back-button"
+          whileHover={{ scale: 1.1 }} 
+          whileTap={{ scale: 0.9 }}
+        >
+          <Link to="/evaluar" className="back-link">Regresar a las evaluaciones</Link>
+        </motion.button>
+
       </form>
+
+      
     </motion.div>
   );
 };
