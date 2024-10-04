@@ -1,88 +1,121 @@
-
 .perfil-container {
-    display: flex;
-    justify-content: center; 
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f8fafc; /* Fondo claro y elegante */
+  border-radius: 12px;
+}
+
+.perfil-card, 
+.editar-perfil-card {
+  width: 100%;
+  max-width: 500px;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.perfil-card:hover, 
+.editar-perfil-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15); /* Aumento de la sombra en hover */
+}
+
+.perfil-header {
+  font-size: 2em;
+  text-align: center;
+  color: #34495e;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 10px;
+}
+
+.perfil-info {
+  text-align: center;
+}
+
+.perfil-name {
+  font-size: 1.6em;
+  margin: 10px 0;
+  color: #2c3e50;
+}
+
+.perfil-username {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  color: #7f8c8d;
+}
+
+.perfil-role,
+.perfil-member-since {
+  font-size: 1em;
+  color: #95a5a6;
+}
+
+.editar-perfil-header {
+  font-size: 1.8em;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e1e1e1;
+  padding-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1em;
+  color: #7f8c8d;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #3498db; 
+  outline: none;
+}
+
+.update-btn {
+  width: 100%;
+  padding: 15px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.update-btn:hover {
+  background-color: #2980b9;
+  box-shadow: 0px 6px 18px rgba(0, 123, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .perfil-container {
+    flex-direction: column;
+    align-items: center;
   }
-  .perfil-card,
+
+  .perfil-card, 
   .editar-perfil-card {
-    width: 30%; 
-    overflow: hidden;
-    text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 30px; 
+    max-width: 100%;
   }
-  .perfil-avatar {
-    width: 80px; 
-    height: 80px; 
-    border-radius: 70%;
-    margin-top: 30px;
-  }
-  .perfil-name {
-    font-size: 1.2em; 
-    margin: 15px 0 5px 0;
-    color: #333;
-  }
-  .perfil-username {
-    font-size: 1em;
-    margin-bottom: 10px;
-    color: #777;
-  }
-  .perfil-upload-btn,
-  .perfil-edit-btn,
-  .update-btn {
-    background-color: #6384a7;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  .perfil-upload-info {
-    font-size: 0.9em;
-    color: #777;
-    margin-bottom: 20px;
-  }
-  .perfil-member-since {
-    font-size: 0.9em;
-    color: #777;
-  }
-  .editar-perfil-card h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #777;
-  }
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #e1e1e1;
-    border-radius: 4px;
-  }
-  .social-profile {
-    margin-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  .social-profile input {
-    width: calc(50% - 10px);
-    padding: 8px;
-    border: 1px solid #e1e1e1;
-    border-radius: 4px;
-  }
-  @media only screen and (max-width: 600px) {
-    .perfil-card,
-    .editar-perfil-card {
-      width: 100%; 
-    }
-  }
-  
+}
