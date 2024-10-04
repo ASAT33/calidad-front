@@ -9,8 +9,8 @@ const Perfil = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState(""); // Estado para el rol
-  const [createdAt, setCreatedAt] = useState(""); // Estado para la fecha de creación
+  const [role, setRole] = useState(""); 
+  const [createdAt, setCreatedAt] = useState(""); 
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -24,11 +24,11 @@ const Perfil = () => {
 
         const { name, email, role, created_at } = response.data;
         setFullName(name);
-        setUserName(name); // Asumimos que el nombre de usuario es el nombre completo por ahora
+        setUserName(name); 
         setEmail(email);
         setConfirmEmail(email);
         setRole(role);
-        setCreatedAt(created_at); // Convertir la fecha a un formato legible
+        setCreatedAt(new Date(created_at).toLocaleDateString());
       } catch (error) {
         console.error('Error al obtener el perfil:', error);
         alert('Error al cargar los datos del perfil');
@@ -71,14 +71,17 @@ const Perfil = () => {
   return (
     <div className="perfil-container">
       <div className="perfil-card">
-        <h2>Perfil</h2>
-        <h2 className="perfil-name">{fullName}</h2>
-        <p className="perfil-username">#{userName}</p>
-        <p className="perfil-role">Rol: {role}</p> {/* Mostrar rol */}
-        <p className="perfil-member-since">Miembro desde: {createdAt}</p> {/* Mostrar fecha de creación */}
+        <h2 className="perfil-header">Mi Perfil</h2>
+        <div className="perfil-info">
+          <h3 className="perfil-name">{fullName}</h3>
+          <p className="perfil-username">@{userName}</p>
+          <p className="perfil-role">Rol: {role}</p>
+          <p className="perfil-member-since">Miembro desde: {createdAt}</p>
+        </div>
       </div>
+
       <div className="editar-perfil-card">
-        <h2>Editar Perfil</h2>
+        <h2 className="editar-perfil-header">Editar Información</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre completo</label>
@@ -104,7 +107,7 @@ const Perfil = () => {
             <label>Confirmar contraseña</label>
             <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
           </div>
-          <button type="submit" className="update-btn">Actualizar Datos</button>
+          <button type="submit" className="update-btn">Actualizar Perfil</button>
         </form>
       </div>
     </div>
