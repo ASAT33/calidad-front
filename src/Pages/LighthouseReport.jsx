@@ -158,7 +158,7 @@ const LighthouseReport = ({ evaluationId }) => {
 
   // Mensaje de carga mientras se evalúa con Lighthouse
   if (lighthouseLoading) {
-    return <Typography variant="h6" align="center">Evaluando con Lighthouse...</Typography>;
+    return <Typography variant="h6" align="center">Evaluando con PageSpeed Insights...</Typography>;
   }
 
   // Función para obtener el puntaje de una categoría específica

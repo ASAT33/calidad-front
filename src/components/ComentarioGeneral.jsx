@@ -9,13 +9,15 @@ const ComentarioGeneral = ({ evaluationId }) => {
   useEffect(() => {
     const fetchComentarioGeneral = async () => {
       console.log("ID de evaluación en ComentarioGeneral:", evaluationId); 
-
+  
       try {
         const response = await fetch(`http://localhost:5000/api/evaluaciones/comentario/${evaluationId}`); 
         const data = await response.json();
         if (data) {
+          // Filtramos asteriscos y numerales del texto del análisis de IA
+          const comentarioProcesado = data.IA ? data.IA.replace(/[*#]/g, '') : 'Sin análisis de IA disponible'; 
           setComentarioGeneral(data.comentario_general || 'Sin comentario disponible');
-          setAnalisisIA(data.IA || 'Sin análisis de IA disponible'); 
+          setAnalisisIA(comentarioProcesado);  // Guardamos el texto procesado
         } else {
           setComentarioGeneral('Sin comentario disponible');
           setAnalisisIA('Sin análisis de IA disponible');
@@ -28,10 +30,10 @@ const ComentarioGeneral = ({ evaluationId }) => {
         setLoading(false);
       }
     };
-
+  
     fetchComentarioGeneral();
   }, [evaluationId]);
-
+  
   if (loading) {
     return <Typography variant="h6" align="center">Cargando comentario general...</Typography>;
   }
@@ -48,9 +50,13 @@ const ComentarioGeneral = ({ evaluationId }) => {
         <Typography variant="h5" align="center" gutterBottom>
           Análisis de la IA
         </Typography>
-        <Typography variant="body1" align="center">
-          {analisisIA} 
-        </Typography>
+        <Typography 
+        variant="body1" 
+        align="left" 
+        style={{ whiteSpace: 'pre-line' }}  // Agregar esta línea para respetar saltos de línea
+      >
+        {analisisIA} 
+      </Typography>
       </Card>
     </Box>
   );

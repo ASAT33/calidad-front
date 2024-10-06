@@ -75,16 +75,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 // Define the navigation items based on roles
 const navItems = {
   evaluator: [
-    { label: "Evaluar(evaluator)", path: "/evaluar" },
-    { label: "Evaluated(evaluator)", path: "/historial" },
+    { label: "Evaluar", path: "/evaluar" },
+    { label: "Historial de evalauciones", path: "/historial" },
   ],
   user: [
-    { label: "User", path: "/enviar" },
-    { label: "Evaluated(user)", path: "/evaluados" },
+    { label: "Subir Proyecto", path: "/enviar" },
+    { label: "Evaluados", path: "/evaluados" },
   ],
   common: [
     { label: "Inicio", path: "/" },
-    { label: "Norma ISO25010", path: "/Iso" },
+    //{ label: "Norma ISO25010", href: "https://iso25000.com/index.php/normas-iso-25000/iso-25010" },
   ],
 };
 
